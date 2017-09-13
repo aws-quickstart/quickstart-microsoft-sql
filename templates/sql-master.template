@@ -295,7 +295,7 @@
             "Type": "String"
         },
         "ADServer1NetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+",
             "Default": "DC1",
             "Description": "NetBIOS name of the first Active Directory server (up to 15 characters)",
             "MaxLength": "15",
@@ -324,7 +324,7 @@
             "Type": "String"
         },
         "ADServer2NetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+",
             "Default": "DC2",
             "Description": "NetBIOS name of the second Active Directory server (up to 15 characters)",
             "MaxLength": "15",
@@ -363,7 +363,7 @@
             "Type": "String"
         },
         "DomainDNSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+",
             "Default": "example.com",
             "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
             "MaxLength": "25",
@@ -371,7 +371,7 @@
             "Type": "String"
         },
         "DomainNetBIOSName": {
-            "AllowedPattern": "[a-zA-Z0-9]+",
+            "AllowedPattern": "[a-zA-Z0-9\\-]+",
             "Default": "example",
             "Description": "NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows e.g. EXAMPLE",
             "MaxLength": "15",
