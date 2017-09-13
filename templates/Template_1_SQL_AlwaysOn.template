@@ -34,7 +34,7 @@
             "Default": "example.com",
             "MinLength": "3",
             "MaxLength": "25",
-            "AllowedPattern": "[a-zA-Z0-9]+\\..+"
+            "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+"
         },
         "DomainNetBIOSName": {
             "Description": "NetBIOS name of the domain (upto 15 characters) for users of earlier versions of Windows e.g. CORP",
@@ -42,7 +42,7 @@
             "Default": "example",
             "MinLength": "1",
             "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9]+"
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
         "WSFCNode1NetBIOSName": {
             "Description": "NetBIOS name of the 1st WSFC Node (up to 15 characters)",
@@ -50,7 +50,7 @@
             "Default": "WSFCNode1",
             "MinLength": "1",
             "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9]+"
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
         "WSFCNode2NetBIOSName": {
             "Description": "NetBIOS name of the 2nd WSFC Node (up to 15 characters)",
@@ -58,7 +58,7 @@
             "Default": "WSFCNode2",
             "MinLength": "1",
             "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9]+"
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
         "ADServerNetBIOSName1": {
             "Description": "NetBIOS name of the existing Domain Controller in AZ1",
@@ -66,7 +66,7 @@
             "Default": "DC1",
             "MinLength": "1",
             "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9]+"
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
         "ADServerNetBIOSName2": {
             "Description": "NetBIOS name of the existing Domain Controller in AZ2",
@@ -74,7 +74,7 @@
             "Default": "DC2",
             "MinLength": "1",
             "MaxLength": "15",
-            "AllowedPattern": "[a-zA-Z0-9]+"
+            "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
         "DomainAdminUser": {
             "Description": "User name for the account that will be added as Domain Administrator. This is separate from the default \"Administrator\" account",
