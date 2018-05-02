@@ -3550,6 +3550,10 @@
                                         "",
                                         [
                                             "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Configure-WSFC.ps1",
+                                            " -WSFCName ",
+                                            {
+                                                "Ref": "AWS::StackName"
+                                            },
                                             " -WSFCNode1PrivateIP2 ",
                                             {
                                                 "Ref": "WSFCNode1PrivateIP2"
