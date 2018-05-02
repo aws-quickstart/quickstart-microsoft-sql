@@ -3,6 +3,10 @@ param(
 
     [Parameter(Mandatory=$true)]
     [string]
+    $WSFCName,
+    
+    [Parameter(Mandatory=$true)]
+    [string]
     $DomainNetBIOSName,
 
     [Parameter(Mandatory=$true)]
@@ -53,7 +57,7 @@ try {
     $ConfigWSFCPs={
         $nodes = $Using:WSFCNode1NetBIOSName, $Using:WSFCNode2NetBIOSName
         $addr =  $Using:WSFCNode1PrivateIP2, $Using:WSFCNode2PrivateIP2
-        New-Cluster -Name WSFCluster1 -Node $nodes -StaticAddress $addr
+        New-Cluster -Name $WSFCName -Node $nodes -StaticAddress $addr
     }
     if ($WSFCNode3NetBIOSName) {
         $ConfigWSFCPs={
