@@ -1,5 +1,8 @@
 [CmdletBinding()]
 param(
+    [Parameter(Mandatory=$true)]
+    [string]
+    $WSFCName,
 
     [Parameter(Mandatory=$true)]
     [string]$DomainNetBIOSName,
@@ -54,7 +57,7 @@ Try{
 
     }
 
-    $obj = $DomainNetBIOSName + '\WSFCluster1$'
+    $obj = $DomainNetBIOSName + '\' + $WSFCName + '$'
     Invoke-Command -ScriptBlock $SetPermissions -ComputerName $FileServerNetBIOSName -Credential $DomainAdminCreds
 
     $obj = $DomainNetBIOSName + '\' + $SQLServiceAccount

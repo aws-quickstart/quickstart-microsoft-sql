@@ -63,6 +63,7 @@
                         "default": "Failover Cluster Configuration"
                     },
                     "Parameters": [
+                        "WSFClusterName",
                         "WSFCFileServerInstanceType",
                         "WSFCFileServerNetBIOSName",
                         "WSFCFileServerPrivateIP",
@@ -189,6 +190,9 @@
                 },
                 "VPCID": {
                     "default": "VPC ID"
+                },
+                "WSFClusterName": {
+                    "default": "Failover cluster virtual network name account"
                 },
                 "WSFCFileServerInstanceType": {
                     "default": "File Server Instance Type"
@@ -463,6 +467,13 @@
             "Description": "ID of the VPC (e.g., vpc-0343606e)",
             "Type": "AWS::EC2::VPC::Id"
         },
+        "WSFClusterName": {
+            "Description": "NetBIOS name of the Failover cluster virtual network",
+            "Default": "WSFCluster1",
+            "MaxLength": "15",
+            "MinLength": "1",
+            "Type": "String"
+        },
         "WSFCFileServerInstanceType": {
             "Default": "t2.small",
             "Description": "Amazon EC2 instance type for a fileserver used to share install media, witness and replication folders",
@@ -649,7 +660,7 @@
         "Vol2IsIo1": {
             "Fn::Equals": [
                 {
-                    "Ref": "Volume1Type"
+                    "Ref": "Volume2Type"
                 },
                 "io1"
             ]
@@ -657,7 +668,7 @@
         "Vol3IsIo1": {
             "Fn::Equals": [
                 {
-                    "Ref": "Volume1Type"
+                    "Ref": "Volume2Type"
                 },
                 "io1"
             ]
@@ -3551,6 +3562,10 @@
                                         "",
                                         [
                                             "powershell.exe -ExecutionPolicy RemoteSigned -Command \"C:\\cfn\\scripts\\Configure-WSFC.ps1",
+                                            " -WSFCName ",
+                                            {
+                                                "Ref": "WSFClusterName"
+                                            },
                                             " -WSFCNode1PrivateIP2 ",
                                             {
                                                 "Ref": "WSFCNode1PrivateIP2"

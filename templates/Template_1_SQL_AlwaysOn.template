@@ -44,6 +44,13 @@
             "MaxLength": "15",
             "AllowedPattern": "[a-zA-Z0-9\\-]+"
         },
+        "WSFClusterName": {
+            "Description": "NetBIOS name of the Failover cluster virtual network",
+            "Default": "WSFCluster1",
+            "MaxLength": "15",
+            "MinLength": "1",
+            "Type": "String"
+        },
         "WSFCNode1NetBIOSName": {
             "Description": "NetBIOS name of the 1st WSFC Node (up to 15 characters)",
             "Type": "String",
@@ -1408,7 +1415,11 @@
                                     "Fn::Join": [
                                         "",
                                         [
-                                            "New-Cluster -Name WSFCluster1 -Node  ",
+                                            "New-Cluster -Name ",
+                                            {
+                                                "Ref": "WSFClusterName"
+                                            },
+                                            " -Node  ",
                                             {
                                                 "Ref": "WSFCNode1NetBIOSName"
                                             },
@@ -1627,7 +1638,11 @@
                                             {
                                                 "Ref": "DomainNetBIOSName"
                                             },
-                                            "\\WSFCluster1$','FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow');",
+                                            "\\",
+                                            {
+                                                "Ref": "WSFClusterName"
+                                            },
+                                            "$','FullControl', 'ContainerInherit, ObjectInherit', 'None', 'Allow');",
                                             "    $acl.AddAccessRule($rule);",
                                             "    Set-Acl c:\\witness $acl",
                                             "} -ComputerName ",
