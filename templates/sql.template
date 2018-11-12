@@ -4507,6 +4507,34 @@
                 "ToPort": "1434"
             }
         },
+        "WSFCSecurityGroupIngressTcp49152to65535": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "WSFCSecurityGroup"
+                },
+                "SourceSecurityGroupId": {
+                    "Ref": "WSFCSecurityGroup"
+                },
+                "IpProtocol": "tcp",
+                "FromPort": "49152",
+                "ToPort": "65535"
+            }
+        },
+        "WSFCSecurityGroupIngressUdp49152to65535": {
+            "Type": "AWS::EC2::SecurityGroupIngress",
+            "Properties": {
+                "GroupId": {
+                    "Ref": "WSFCSecurityGroup"
+                },
+                "SourceSecurityGroupId": {
+                    "Ref": "WSFCSecurityGroup"
+                },
+                "IpProtocol": "udp",
+                "FromPort": "49152",
+                "ToPort": "65535"
+            }
+        },
         "SQLServerAccessSecurityGroup": {
             "Type": "AWS::EC2::SecurityGroup",
             "Properties": {
