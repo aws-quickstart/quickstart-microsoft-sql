@@ -19,22 +19,22 @@ global:
     - us-west-2
   reporting: true
 tests:
-  ds-defaults:
+  mssql-ds:
     parameter_input: sql-master-ds-defaults.json
     regions:
       - eu-west-1
     template_file: sql-master.template
-  ds-3rdaz-witness:
+  mssql-ds-3rdaz-witness:
     parameter_input: sql-master-ds-3rdaz-witness.json
     regions:
       - us-west-2
     template_file: sql-master.template
-  ds-3rdaz-full:
+  mssql-ds-3rdaz-full:
     parameter_input: sql-master-ds-3rdaz-full.json
     regions:
       - us-east-1
     template_file: sql-master.template
-  ec2-defaults:
+  mssql-ec2:
     parameter_input: sql-master-ec2-defaults.json
     regions:
       - ap-northeast-1
@@ -42,41 +42,41 @@ tests:
       - eu-central-1
       - us-west-1
     template_file: sql-master.template
-  ec2-sql-2017:
+  mssql-ec2-sql-2017:
     parameter_input: sql-master-ec2-sql-2017.json
     regions:
       - ap-northeast-2
       - ap-southeast-2
-      - eu-west-1
+    #  - eu-west-1
       - us-west-1
     template_file: sql-master.template
-  ec2-ebs-io1:
+  mssql-ec2-ebs-io1:
     parameter_input: sql-master-ec2-ebs-io1.json
     regions:
-      - ap-south-1
+    #  - ap-south-1
       - ca-central-1
       - us-west-1
     template_file: sql-master.template
-  ec2-3rdaz-witness:
+  mssql-ec2-3rdaz-witness:
     parameter_input: sql-master-ec2-3rdaz-witness.json
     regions:
       - ap-southeast-2
       - eu-west-1
       - us-east-2
     template_file: sql-master.template
-  ec2-3rdaz-full:
+  mssql-ec2-3rdaz-full:
     parameter_input: sql-master-ec2-3rdaz-full.json
     regions:
       - ap-southeast-1
-      - eu-west-2
+    #  - eu-west-2
       - us-east-2
-      - us-west-2
+    #  - us-west-2
     template_file: sql-master.template
-  ec2-li-2017:
-    parameter_input: sql-master-ec2-license-included-2017.json
-    regions:
-      - us-west-2
-    template_file: sql-master.template
+#  mssql-ec2-li-2017:
+#    parameter_input: sql-master-ec2-license-included-2017.json
+#    regions:
+#      - us-west-2
+#    template_file: sql-master.template
 #  ec2-li-2016:
 #    parameter_input: sql-master-ec2-license-included-2016.json
 #    regions:

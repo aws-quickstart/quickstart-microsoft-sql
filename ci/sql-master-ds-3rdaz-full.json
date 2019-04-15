@@ -20,10 +20,6 @@
         "ParameterValue": "10.0.0.0/16"
     },
     {
-        "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[taskcat_genpass_16]"
-    },
-    {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"
     },
@@ -34,5 +30,9 @@
     {
         "ParameterKey": "ThirdAZ",
         "ParameterValue": "full"
+    },
+    {
+        "ParameterKey": "QSS3BucketName",
+        "ParameterValue": "$[taskcat_autobucket]"
     }
 ]

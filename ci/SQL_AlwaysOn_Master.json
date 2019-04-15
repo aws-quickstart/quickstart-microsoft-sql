@@ -16,12 +16,12 @@
         "ParameterValue": "m4.xlarge"
     },
     {
-        "ParameterKey": "ADServerNetBIOSName1",
-        "ParameterValue": "DC1"
+        "ParameterKey": "ADServer1NetBIOSName",
+        "ParameterValue": "DC-SQL-1"
     },
     {
-        "ParameterKey": "ADServerNetBIOSName2",
-        "ParameterValue": "DC2"
+        "ParameterKey": "ADServer2NetBIOSName",
+        "ParameterValue": "DC-SQL-2"
     },
     {
         "ParameterKey": "DMZ1CIDR",
@@ -66,10 +66,6 @@
     {
         "ParameterKey": "RDGWInstanceType",
         "ParameterValue": "m4.xlarge"
-    },
-    {
-        "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
         "ParameterKey": "SQLServerVersion",

@@ -16,12 +16,16 @@
         "ParameterValue": "$[taskcat_getkeypair]"
     },
     {
-        "ParameterKey": "RDGWCIDR",
-        "ParameterValue": "10.0.0.0/16"
+        "ParameterKey": "ADServer1NetBIOSName",
+        "ParameterValue": "DC-SQL-1"
     },
     {
-        "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[taskcat_genpass_16]"
+        "ParameterKey": "ADServer2NetBIOSName",
+        "ParameterValue": "DC-SQL-2"
+    },
+    {
+        "ParameterKey": "RDGWCIDR",
+        "ParameterValue": "10.0.0.0/16"
     },
     {
         "ParameterKey": "SQLLicenseProvided",
@@ -30,5 +34,9 @@
     {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"
+    },
+    {
+        "ParameterKey": "QSS3BucketName",
+        "ParameterValue": "$[taskcat_autobucket]"
     }
 ]

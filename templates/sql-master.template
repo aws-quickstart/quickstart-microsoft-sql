@@ -52,8 +52,7 @@
                         "ADServer1PrivateIP",
                         "ADServer2InstanceType",
                         "ADServer2NetBIOSName",
-                        "ADServer2PrivateIP",
-                        "RestoreModePassword"
+                        "ADServer2PrivateIP"
                     ]
                 },
                 {
@@ -190,9 +189,6 @@
                 },
                 "RDGWCIDR": {
                     "default": "Allowed Remote Desktop Gateway External Access CIDR"
-                },
-                "RestoreModePassword": {
-                    "default": "Restore Mode Password"
                 },
                 "SQLLicenseProvided": {
                     "default": "Amazon-Provided SQL Server License"
@@ -350,7 +346,7 @@
         },
         "DomainAdminPassword": {
             "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
-            "Description": "Password for the domain admin user. Must be at least 8 characters containing letters, numbers and symbols",
+            "Description": "Password for the domain admin user. Must be at least 8 characters containing letters, numbers, and symbols",
             "MaxLength": "32",
             "MinLength": "8",
             "NoEcho": "true",
@@ -367,7 +363,7 @@
         "DomainDNSName": {
             "AllowedPattern": "[a-zA-Z0-9\\-]+\\..+",
             "Default": "example.com",
-            "Description": "Fully qualified domain name (FQDN) of the forest root domain e.g. example.com",
+            "Description": "Fully qualified domain name (FQDN) of the forest root domain; e.g., example.com",
             "MaxLength": "255",
             "MinLength": "2",
             "Type": "String"
@@ -375,7 +371,7 @@
         "DomainNetBIOSName": {
             "AllowedPattern": "[a-zA-Z0-9\\-]+",
             "Default": "example",
-            "Description": "NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows e.g. EXAMPLE",
+            "Description": "NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows; e.g., EXAMPLE",
             "MaxLength": "15",
             "MinLength": "1",
             "Type": "String"
@@ -387,11 +383,11 @@
                 "Dedicated Host"
             ],
             "Default": "Shared",
-            "Description": "Host Type, If dedicated or Dedicated Host is selected hosts will be created in each AZ",
+            "Description": "Host Type; if Dedicated or Dedicated Host is selected, hosts will be created in each Availability Zone.",
             "Type": "String"
         },
         "KeyPairName": {
-            "Description": "Public/private key pairs allow you to securely connect to your instance after it launches",
+            "Description": "Public/private key pairs allow you to securely connect to your instance after it launches.",
             "Type": "AWS::EC2::KeyPair::KeyName"
         },
         "NumberOfRDGWHosts": {
@@ -425,12 +421,12 @@
         },
         "PublicSubnet1CIDR": {
             "Default": "10.0.128.0/20",
-            "Description": "CIDR Block for the public DMZ subnet 2 located in Availability Zone 2",
+            "Description": "CIDR Block for the public DMZ subnet 1 located in Availability Zone 1",
             "Type": "String"
         },
         "PublicSubnet2CIDR": {
             "Default": "10.0.144.0/20",
-            "Description": "CIDR Block for the optional public DMZ subnet 3 located in Availability Zone 3",
+            "Description": "CIDR Block for the optional public DMZ subnet 2 located in Availability Zone 2",
             "Type": "String"
         },
         "PublicSubnet3CIDR": {
@@ -473,14 +469,6 @@
             "Description": "Allowed CIDR Block for external access to the Remote Desktop Gateways",
             "Type": "String"
         },
-        "RestoreModePassword": {
-            "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
-            "Description": "Password for a separate Administrator account when the domain controller is in Restore Mode. Must be at least 8 characters containing letters, numbers and symbols",
-            "MaxLength": "32",
-            "MinLength": "8",
-            "NoEcho": "True",
-            "Type": "String"
-        },
         "SQLLicenseProvided": {
             "AllowedValues": [
                 "yes",
@@ -502,14 +490,14 @@
         "SQLServiceAccount": {
             "AllowedPattern": "[a-zA-Z0-9]*",
             "Default": "sqlsa",
-            "Description": "User name for the SQL Server Service Account. This Account is a Domain User.",
+            "Description": "User name for the SQL Server Service account. This account is a Domain User.",
             "MaxLength": "25",
             "MinLength": "5",
             "Type": "String"
         },
         "SQLServiceAccountPassword": {
             "AllowedPattern": "(?=^.{6,255}$)((?=.*\\d)(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[^A-Za-z0-9])(?=.*[a-z])|(?=.*[^A-Za-z0-9])(?=.*[A-Z])(?=.*[a-z])|(?=.*\\d)(?=.*[A-Z])(?=.*[^A-Za-z0-9]))^.*",
-            "Description": "Password for the SQL Service account. Must be at least 8 characters containing letters, numbers and symbols",
+            "Description": "Password for the SQL Service account. Must be at least 8 characters containing letters, numbers, and symbols.",
             "MaxLength": "32",
             "MinLength": "8",
             "NoEcho": "true",
@@ -522,19 +510,19 @@
                 "full"
             ],
             "Default": "no",
-            "Description": "Enable a 3 AZ deployment, the 3rd AZ can either be used just for the witness, or can be a full SQL cluster node. Note that if witness is chosen, the WFC File Server Private IP Address parameter must be set to an IP in the 3rd subnet range.",
+            "Description": "Enable a three-AZ deployment; the third zone can either be used just for the witness, or it can be a full SQL cluster node. Note that if the witness option is chosen, the WFC File Server Private IP Address parameter must be set to an IP in the third subnet range.",
             "Type": "String"
         },
         "VolumeIops": {
             "Default": "1000",
-            "Description": "Provisioned IOPS for the SQL Data, Logs and TempDb volumes. This parameter is only applicable when SQL Server Volume Type is set to \"io1\"",
+            "Description": "Provisioned IOPS for the SQL Data, Logs, and TempDb volumes. This parameter is only applicable when SQL Server Volume Type is set to \"io1\".",
             "MaxValue": "20000",
             "MinValue": "100",
             "Type": "Number"
         },
         "VolumeSize": {
             "Default": "500",
-            "Description": "Volume size for the SQL Data, Logs and TempDb volumes, in GiB",
+            "Description": "Volume size for the SQL Data, Logs, and TempDb volumes, in GiB",
             "MaxValue": "16000",
             "MinValue": "100",
             "Type": "Number"
@@ -545,7 +533,7 @@
                 "io1"
             ],
             "Default": "gp2",
-            "Description": "Volume type for the SQL Data, Logs and TempDb volumes",
+            "Description": "Volume type for the SQL Data, Logs, and TempDb volumes",
             "Type": "String"
         },
         "VPCCIDR": {
@@ -556,6 +544,10 @@
             "Type": "String"
         },
         "WSFCFileServerInstanceType": {
+            "AllowedValues": [
+                "t2.small",
+                "t3.small"
+            ],
             "Default": "t2.small",
             "Description": "Amazon EC2 instance type for a fileserver used to share install media, witness and replication folders",
             "Type": "String"
@@ -649,7 +641,12 @@
                 "r4.xlarge",
                 "r4.2xlarge",
                 "r4.4xlarge",
-                "r4.8xlarge"
+                "r4.8xlarge",
+                "r5.large",
+                "r5.xlarge",
+                "r5.2xlarge",
+                "r5.4xlarge",
+                "r5.12xlarge"
             ],
             "ConstraintDescription": "Only EBS Optimized instance types r4.xlarge, r4.2xlarge, r4.4xlarge, r4.8xlarge allowed",
             "Default": "r4.2xlarge",
@@ -900,17 +897,11 @@
                             "KeyPairName": {
                                 "Ref": "KeyPairName"
                             },
-                            "PrivateSubnet1CIDR": {
-                                "Ref": "PrivateSubnet1CIDR"
-                            },
                             "PrivateSubnet1ID": {
                                 "Fn::GetAtt": [
                                     "VPCStack",
                                     "Outputs.PrivateSubnet1AID"
                                 ]
-                            },
-                            "PrivateSubnet2CIDR": {
-                                "Ref": "PrivateSubnet2CIDR"
                             },
                             "PrivateSubnet2ID": {
                                 "Fn::GetAtt": [
@@ -918,20 +909,11 @@
                                     "Outputs.PrivateSubnet2AID"
                                 ]
                             },
-                            "PublicSubnet1CIDR": {
-                                "Ref": "PublicSubnet1CIDR"
-                            },
-                            "PublicSubnet2CIDR": {
-                                "Ref": "PublicSubnet2CIDR"
-                            },
                             "QSS3BucketName": {
                                 "Ref": "QSS3BucketName"
                             },
                             "QSS3KeyPrefix": {
                                 "Fn::Sub": "${QSS3KeyPrefix}submodules/quickstart-microsoft-activedirectory/"
-                            },
-                            "RestoreModePassword": {
-                                "Ref": "RestoreModePassword"
                             },
                             "VPCCIDR": {
                                 "Ref": "VPCCIDR"

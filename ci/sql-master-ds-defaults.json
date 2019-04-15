@@ -20,15 +20,15 @@
         "ParameterValue": "10.0.0.0/16"
     },
     {
-        "ParameterKey": "RestoreModePassword",
-        "ParameterValue": "$[taskcat_genpass_16]"
-    },
-    {
         "ParameterKey": "SQLLicenseProvided",
         "ParameterValue": "no"
     },
     {
         "ParameterKey": "SQLServiceAccountPassword",
         "ParameterValue": "$[taskcat_genpass_16]"
+    },
+    {
+        "ParameterKey": "QSS3BucketName",
+        "ParameterValue": "$[taskcat_autobucket]"
     }
 ]
