@@ -21,7 +21,10 @@ Get-NetFirewallProfile | Set-NetFirewallProfile -Enabled False
 New-Item -Path C:\AWSQuickstart\publickeys -ItemType directory 
 
 "Setting up DSC Certificate to Encrypt Credentials in MOF File"
-$cert = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName 'AWSQSDscEncryptCert' -HashAlgorithm SHA256
+If (-Not (Get-ChildItem -path cert:\LocalMachine\My | Where-Object { $_.subject -eq "CN=AWSQSDscEncryptCert" })) {
+  $cert = New-SelfSignedCertificate -Type DocumentEncryptionCertLegacyCsp -DnsName 'AWSQSDscEncryptCert' -HashAlgorithm SHA256
+}
+
 # Exporting the public key certificate
 $cert | Export-Certificate -FilePath "C:\AWSQuickstart\publickeys\AWSQSDscPublicKey.cer" -Force
 
