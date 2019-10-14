@@ -867,15 +867,16 @@ Resources:
           action: "aws:runCommand"
           onFailure: "step:signalfailure" 
           inputs:
-            DocumentName: AWS-RunPowerShellScript
+            DocumentName: AWS-RunRemoteScript
             InstanceIds: 
               - "{{wsfcnInstanceIds.InstanceIds}}"
             CloudWatchOutputConfig:
               CloudWatchOutputEnabled: "true"
             Parameters:
-              commands: 
-                - |
-                   C:\ProgramData\Amazon\EC2-Windows\Launch\Scripts\InitializeDisks.ps1
+              sourceType: "S3"
+              sourceInfo: !Sub ['{"path": "https://${QSS3Region}.amazonaws.com/{{QSS3BucketName}}/{{QSS3KeyPrefix}}scripts/Initialize-GPT.ps1"}',
+                  {QSS3Region: !If [GovCloudCondition, s3-us-gov-west-1, s3]}]
+              commandLine: "./Initialize-GPT.ps1"
         - name: "wsfcnInstallDscModules"
           action: "aws:runCommand"
           onFailure: "step:signalfailure"
