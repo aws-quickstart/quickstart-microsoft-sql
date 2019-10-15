@@ -1027,7 +1027,7 @@ Resources:
             Type: "StringList"
         - name: "wsfcnodewInitializeDisk"
           action: "aws:runCommand"
-          onFailure: "step:signalfailure" 
+          onFailure: "step:signalfailure"
           inputs:
             DocumentName: AWS-RunRemoteScript
             InstanceIds: 
