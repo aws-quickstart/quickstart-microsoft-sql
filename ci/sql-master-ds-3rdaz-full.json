@@ -32,6 +32,10 @@
         "ParameterValue": "$[taskcat_genpass_16]"
     },
     {
+        "ParameterKey": "SQL2019Media",
+        "ParameterValue": "https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso"
+    },
+    {
         "ParameterKey": "SQLLicenseProvided",
         "ParameterValue": "no"
     },

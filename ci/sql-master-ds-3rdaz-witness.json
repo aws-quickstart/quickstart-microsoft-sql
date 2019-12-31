@@ -36,6 +36,10 @@
         "ParameterValue": "no"
     },
     {
+        "ParameterKey": "SQL2019Media",
+        "ParameterValue": "https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso"
+    },
+    {
         "ParameterKey": "ThirdAZ",
         "ParameterValue": "witness"
     },

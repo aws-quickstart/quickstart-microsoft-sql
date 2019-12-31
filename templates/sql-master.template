@@ -60,6 +60,9 @@ Metadata:
           - VolumeIops
           - VolumeSize
           - VolumeType
+          - SQL2016Media
+          - SQL2017Media
+          - SQL2019Media
       - Label:
           default: Failover cluster configuration
         Parameters:
@@ -142,6 +145,12 @@ Metadata:
         default: RDGW instance type
       RDGWCIDR:
         default: Allowed RDGW external access CIDR
+      SQL2016Media:
+        default: SQL Server 2016 installation media location
+      SQL2017Media:
+        default: SQL Server 2017 installation media location
+      SQL2019Media:
+        default: SQL Server 2019 installation media location
       SQLLicenseProvided:
         default: Amazon-provided SQL Server license
       SQLServerVersion:
@@ -404,6 +413,18 @@ Parameters:
     ConstraintDescription: CIDR block parameter must be in the form x.x.x.x/x
     Description: Allowed CIDR block for external access to the Remote Desktop Gateway instances.
     Type: String
+  SQL2016Media:
+    Default: https://download.microsoft.com/download/9/0/7/907AD35F-9F9C-43A5-9789-52470555DB90/ENU/SQLServer2016SP1-FullSlipstream-x64-ENU.iso
+    Description: SQL Server 2016 installation media location
+    Type: String
+  SQL2017Media:
+    Default: https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SQLServer2017-x64-ENU.iso
+    Description: SQL Server 2017 installation media location
+    Type: String
+  SQL2019Media:
+    Default: Enter a URL here
+    Description: SQL Server 2019 installation media location
+    Type: String
   SQLLicenseProvided:
     AllowedValues:
       - 'yes'
@@ -414,8 +435,8 @@ Parameters:
   SQLServerVersion:
     AllowedValues:
       - '2017'
-      - '2016'
-    Default: '2017'
+      - '2019'
+    Default: '2019'
     Description: Version of SQL Server to install on failover cluster nodes.
     Type: String
   SQLServiceAccount:
@@ -775,6 +796,9 @@ Resources:
         QSS3BucketName: !Ref 'QSS3BucketName'
         QSS3KeyPrefix: !Ref 'QSS3KeyPrefix'
         SQLLicenseProvided: !Ref 'SQLLicenseProvided'
+        SQL2016Media: !Ref 'SQL2016Media'
+        SQL2017Media: !Ref 'SQL2017Media'
+        SQL2019Media: !Ref 'SQL2019Media'
         SQLServerVersion: !Ref 'SQLServerVersion'
         SQLServiceAccount: !Ref 'SQLServiceAccount'
         SQLServiceAccountPassword: !Ref 'SQLServiceAccountPassword'

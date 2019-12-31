@@ -4,7 +4,19 @@ param(
 
     [Parameter(Mandatory=$true)]
     [string]
-    $SQLServerVersion
+    $SQLServerVersion,
+
+    [Parameter()]
+    [string]
+    $SQL2016Media,
+
+    [Parameter()]
+    [string]
+    $SQL2017Media,
+
+    [Parameter()]
+    [string]
+    $SQL2019Media
 
 )
 
@@ -19,10 +31,13 @@ try {
     $ssmssource = "https://download.microsoft.com/download/3/C/7/3C77BAD3-4E0F-4C6B-84DD-42796815AFF6/SSMS-Setup-ENU.exe"
 
     if ($SQLServerVersion -eq "2016") {
-        $source = "https://download.microsoft.com/download/9/0/7/907AD35F-9F9C-43A5-9789-52470555DB90/ENU/SQLServer2016SP1-FullSlipstream-x64-ENU.iso"
+        $source = $SQL2016Media
+    }
+    elseif ($SQLServerVersion -eq "2017") {
+        $source = $SQL2017Media
     }
     else {
-        $source = "https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SQLServer2017-x64-ENU.iso"
+        $source = $SQL2019Media
     }
 
     $tries = 5

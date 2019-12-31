@@ -33,8 +33,10 @@ $SQLCredentials = (New-Object PSCredential($SQLAdminUser,(ConvertTo-SecureString
 New-Item -Path C:\SQLInstall -ItemType Directory
 if ($SQLServerVersion -eq "2016") {
     $ImagePath = 'C:\SQLMedia\SQLServer2016SP1-FullSlipstream-x64-ENU.iso'
-} else {
+} elseif ($SQLServerVersion -eq "2017") {
     $ImagePath = 'C:\SQLMedia\SQLServer2017-x64-ENU.iso'
+} else {
+    $ImagePath = 'C:\SQLMedia\SQLServer2019-x64-ENU.iso'
 }
 $mountResult = Mount-DiskImage -ImagePath $ImagePath -PassThru
 $volumeInfo = $mountResult | Get-Volume

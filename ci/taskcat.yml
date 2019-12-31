@@ -39,11 +39,11 @@ tests:
     regions:
       - eu-central-1
     template_file: sql-master.template
-  mssql-ec2-sql-2016:
-    parameter_input: sql-master-ec2-sql-2016.json
-    regions:
-      - us-east-2
-    template_file: sql-master.template
+#  mssql-ec2-sql-2019:
+#    parameter_input: sql-master-ec2-sql-2019.json
+#    regions:
+#      - us-east-2
+#    template_file: sql-master.template
   mssql-ec2-ebs-io1:
     parameter_input: sql-master-ec2-ebs-io1.json
     regions:
@@ -64,8 +64,8 @@ tests:
     regions:
       - us-west-1
     template_file: sql-master.template
-  ec2-li-2016:
-    parameter_input: sql-master-ec2-license-included-2016.json
+  ec2-li-2019:
+    parameter_input: sql-master-ec2-license-included-2019.json
     regions:
       - eu-west-2
     template_file: sql-master.template

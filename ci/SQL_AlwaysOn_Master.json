@@ -69,7 +69,11 @@
     },
     {
         "ParameterKey": "SQLServerVersion",
-        "ParameterValue": "2017"
+        "ParameterValue": "2019"
+    },
+    {
+        "ParameterKey": "SQL2019Media",
+        "ParameterValue": "https://quickstart-ci-media.s3.amazonaws.com/microsoft/sql/SQLServer2019-x64-ENU.iso"
     },
     {
         "ParameterKey": "SQLServiceAccount",
