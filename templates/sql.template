@@ -616,7 +616,7 @@ Conditions:
     - !Ref 'Volume2Type'
     - io1
   Vol3IsIo1: !Equals
-    - !Ref 'Volume2Type'
+    - !Ref 'Volume3Type'
     - io1
   HostTypeIsDefault: !Equals
     - !Ref 'HostType'
