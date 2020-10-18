@@ -1,1 +1,22 @@
-// placeholder
+
+:template_aws_cloudformation_stack:
+:template_aws_cloudformation_waitcondition:
+:template_aws_cloudformation_waitconditionhandle:
+:template_aws_ec2_host:
+:template_aws_ec2_instance:
+:template_aws_ec2_securitygroup:
+:template_aws_ec2_securitygroupingress:
+:template_aws_ec2_volume:
+:template_aws_ec2_volumeattachment:
+:template_aws_fsx_filesystem:
+:template_aws_iam_instanceprofile:
+:template_aws_iam_policy:
+:template_aws_iam_role:
+:template_aws_secretsmanager_secret:
+:template_aws_ssm_document:
+:template_cloudformation:
+:template_ec2:
+:template_fsx:
+:template_iam:
+:template_secretsmanager:
+:template_ssm:

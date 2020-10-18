@@ -1,1 +1,6 @@
-// placeholder
+
+=== Launch into a new VPC
+include::sql-master.adoc[]
+
+=== Launch into an existing VPC
+include::sql.adoc[]

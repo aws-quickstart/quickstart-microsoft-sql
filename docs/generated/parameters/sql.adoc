@@ -1,0 +1,94 @@
+
+.Network configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Third Availability Zone
+(`ThirdAZ`)|`no`|Choose full or witness to enable a deployment with three Availability Zones. The third zone can be used for the witness, or it can be a full SQL cluster node.|VPC ID
+(`VPCID`)|`**__Requires input__**`|ID of the VPC (e.g., vpc-0343606e).|Private subnet 1 ID
+(`PrivateSubnet1ID`)|`**__Requires input__**`|ID of the private subnet 1 in Availability Zone 1 (e.g., subnet-a0246dcd).|Private subnet 2 ID
+(`PrivateSubnet2ID`)|`**__Requires input__**`|ID of the private subnet 2 in Availability Zone 2 (e.g., subnet-a0246dcd).|Private subnet 3 ID
+(`PrivateSubnet3ID`)|`**__Blank string__**`|(Optional) ID of the private subnet 3 in Availability Zone 3 (e.g., subnet-a0246dcd).
+|===
+.Amazon EC2 configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Key pair name
+(`KeyPairName`)|`**__Requires input__**`|Public/private key pair, which allows you to securely connect to your instance after it launches.
+|===
+.Active Directory configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|AD scenario type
+(`ADScenarioType`)|`AWS Directory Service for Microsoft AD (Enterprise Edition)`|Select the type of AD DS deployment to use: AWS Directory Service for Microsoft AD or managing your own Amazon EC2 AD instances.|Domain DNS name
+(`DomainDNSName`)|`example.com`|Fully qualified domain name (FQDN).|Domain NetBIOS name
+(`DomainNetBIOSName`)|`EXAMPLE`|NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows.|Domain admin user name
+(`DomainAdminUser`)|`Admin`|User name for the account that will be used as domain administrator. This is separate from the default "Administrator" account.|Domain admin password
+(`DomainAdminPassword`)|`**__Requires input__**`|Password for the domain admin user. Must be at least 8 characters, containing letters, numbers, and symbols.|Security group ID for AD domain members
+(`DomainMemberSGID`)|`**__Requires input__**`|ID of the domain member security group (e.g., sg-7f16e910).|Domain controller 1 IP address
+(`ADServer1PrivateIP`)|`10.0.0.10`|The IP address of the first Domain Controller. For AWS Managed AD, use the first DNS address.|Domain controller 2 IP address
+(`ADServer2PrivateIP`)|`10.0.32.10`|The IP address of the first Domain Controller. For AWS Managed AD, use the second DNS address.
+|===
+.SQL Server configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|SQL Server version
+(`SQLServerVersion`)|`2019`|Version of SQL Server to install on failover cluster nodes.|Service account name
+(`SQLServiceAccount`)|`sqlsa`|User name for the SQL Server service account. This account is a domain user.|Service account password
+(`SQLServiceAccountPassword`)|`**__Requires input__**`|Password for the SQL Server service account. Must be at least 8 characters, containing letters, numbers and symbols.|Amazon-provided SQL Server license
+(`SQLLicenseProvided`)|`yes`|License SQL Server from AWS Marketplace.|Availability group name
+(`AvailabiltyGroupName`)|`SQLAG1`|NetBIOS name of the availability group (up to 15 characters).|Data volume size
+(`Volume1Size`)|`500`|Volume size for the SQL Server data drive, in GiB.|Data volume type
+(`Volume1Type`)|`gp2`|Volume type for the SQL Server data drive.|Data volume IOPS
+(`Volume1Iops`)|`1000`|IOPS for the SQL Server data drive (only used when volume type is io1).|Logs volume size
+(`Volume2Size`)|`500`|Volume size for the SQL Server logs drive, in GiB.|Logs volume type
+(`Volume2Type`)|`gp2`|Volume type for the SQL Server logs drive.|Logs volume IOPS
+(`Volume2Iops`)|`1000`|IOPS for the SQL Server logs drive (only used when volume type is io1).|TempDB volume size
+(`Volume3Size`)|`500`|Volume size for the SQL Server TempDB drive, in GiB.|TempDB volume type
+(`Volume3Type`)|`gp2`|Volume type for the SQL Server TempDB drive.|TempDB volume IOPS
+(`Volume3Iops`)|`1000`|IOPS for the SQL Server TempDB drive (only used when volume type is io1).|SQL Server 2016 installation media location
+(`SQL2016Media`)|`https://download.microsoft.com/download/9/0/7/907AD35F-9F9C-43A5-9789-52470555DB90/ENU/SQLServer2016SP1-FullSlipstream-x64-ENU.iso`|SQL Server 2016 installation media location|SQL Server 2017 installation media location
+(`SQL2017Media`)|`https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SQLServer2017-x64-ENU.iso`|SQL Server 2017 installation media location|SQL Server 2019 installation media location
+(`SQL2019Media`)|`https://go.microsoft.com/fwlink/?linkid=866664`|SQL Server 2019 installation media location
+|===
+.Failover cluster configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Cluster NetBIOS name
+(`ClusterName`)|`WSFCCluster1`|NetBIOS name of the cluster (up to 15 characters).|File share witness type
+(`WitnessType`)|`Windows file share`|Type of file share to use for failover cluster witness.|File server instance type
+(`WSFCFileServerInstanceType`)|`m5.large`|Amazon EC2 instance type for a file server used to share install media, witness, and replication folders.|File server NetBIOS name
+(`WSFCFileServerNetBIOSName`)|`WSFCFileServer`|NetBIOS name of the WSFC file server (up to 15 characters).|File server private IP address
+(`WSFCFileServerPrivateIP`)|`10.0.0.200`|Primary private IP for the file server located in Availability Zone 1.|Instance type for cluster node 1
+(`WSFCNode1InstanceType`)|`r5.2xlarge`|Amazon EC2 instance type for the first WSFC node.|Cluster node 1 NetBIOS name
+(`WSFCNode1NetBIOSName`)|`WSFCNode1`|NetBIOS name of the first WSFC node (up to 15 characters).|Cluster node 1 private IP address 1
+(`WSFCNode1PrivateIP1`)|`10.0.0.100`|Primary private IP for the first WSFC node located in Availability Zone 1.|Cluster node 1 private IP address 2
+(`WSFCNode1PrivateIP2`)|`10.0.0.101`|Secondary private IP for WSFC cluster on first WSFC node.|Cluster node 1 private IP address 3
+(`WSFCNode1PrivateIP3`)|`10.0.0.102`|Third private IP for availability group listener on first WSFC node.|Instance type for cluster node 2
+(`WSFCNode2InstanceType`)|`r5.2xlarge`|Amazon EC2 instance type for the second WSFC node.|Cluster node 2 NetBIOS name
+(`WSFCNode2NetBIOSName`)|`WSFCNode2`|NetBIOS name of the second WSFC node (up to 15 characters).|Cluster node 2 private IP address 1
+(`WSFCNode2PrivateIP1`)|`10.0.32.100`|Primary private IP for the second WSFC node located in Availability Zone 2.|Cluster node 2 private IP address 2
+(`WSFCNode2PrivateIP2`)|`10.0.32.101`|Secondary private IP for WSFC cluster on second WSFC node.|Cluster node 2 private IP address 3
+(`WSFCNode2PrivateIP3`)|`10.0.32.102`|Third private IP for availability group listener on second WSFC node.|Instance type for cluster node 3
+(`WSFCNode3InstanceType`)|`r5.2xlarge`|Amazon EC2 instance type for the third WSFC node.|Cluster node 3 NetBIOS name
+(`WSFCNode3NetBIOSName`)|`WSFCNode3`|NetBIOS name of the third WSFC node (up to 15 characters).|Cluster node 3 private IP address 1
+(`WSFCNode3PrivateIP1`)|`10.0.64.100`|Primary private IP for the optional third WSFC node located in Availability Zone 3.|Cluster node 3 private IP address 2
+(`WSFCNode3PrivateIP2`)|`10.0.64.101`|Secondary private IP for WSFC cluster on optional third WSFC node.|Cluster node 3 private IP address 3
+(`WSFCNode3PrivateIP3`)|`10.0.64.102`|Third private IP for availability group listener on optional third WSFC node.
+|===
+.AWS Systems Manager AMI configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Windows Server 2019 full base AMI
+(`WS2019FULLBASE`)|`/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-Base`|NO_DESCRIPTION|Windows Server 2019 full locale English with SQL Enterprise 2019 AMI
+(`WS2019FULLSQL2019ENT`)|`/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-SQL_2019_Enterprise`|NO_DESCRIPTION|Windows Server 2019 Locale English with SQL Enterprise 2017 AMI
+(`WS2019FULLSQL2017ENT`)|`/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-SQL_2017_Enterprise`|NO_DESCRIPTION|Windows Server 2019 Locale English with SQL Enterprise 2016 AMI
+(`WS2019FULLSQL2016ENT`)|`/aws/service/ami-windows-latest/Windows_Server-2019-English-Full-SQL_2016_SP2_Enterprise`|NO_DESCRIPTION
+|===
+.AWS Quick Start configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Quick Start S3 bucket name
+(`QSS3BucketName`)|`aws-quickstart`|S3 bucket name for the Quick Start assets. This name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).|Quick Start S3 bucket region
+(`QSS3BucketRegion`)|`us-east-1`|The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.|Quick Start S3 key prefix
+(`QSS3KeyPrefix`)|`quickstart-microsoft-sql/`|S3 key prefix for the Quick Start assets. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
+|===

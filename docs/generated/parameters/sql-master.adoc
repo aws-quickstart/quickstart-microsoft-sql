@@ -1,0 +1,99 @@
+
+.Network configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Availability Zones
+(`AvailabilityZones`)|`**__Requires input__**`|List of Availability Zones to use for the subnets in the VPC. Note: The logical order is preserved and 2 zones must be provided unless the Third Availability Zone parameter is specified, in which case 3 zones must be provided.|Third Availability Zone
+(`ThirdAZ`)|`no`|Enable a deployment with three Availability Zones. The third Availability Zone can either be used just for the witness, or it can be a full SQL cluster node. Note that if witness is chosen, the file server private IP address parameter must be set to an IP in the third subnet range.|VPC CIDR
+(`VPCCIDR`)|`10.0.0.0/16`|CIDR block for the VPC.|Public subnet 1 CIDR
+(`PublicSubnet1CIDR`)|`10.0.128.0/20`|CIDR block for the public subnet 2 located in Availability Zone 2.|Public subnet 2 CIDR
+(`PublicSubnet2CIDR`)|`10.0.144.0/20`|CIDR block for the optional public subnet 3 located in Availability Zone 3.|Public subnet 3 CIDR
+(`PublicSubnet3CIDR`)|`10.0.160.0/20`|(Optional) CIDR block for the optional public subnet 3 located in Availability Zone 3.|Private subnet 1 CIDR
+(`PrivateSubnet1CIDR`)|`10.0.0.0/19`|CIDR block for private subnet 1 located in Availability Zone 1.|Private subnet 2 CIDR
+(`PrivateSubnet2CIDR`)|`10.0.32.0/19`|CIDR block for private subnet 2 located in Availability Zone 2.|Private subnet 3 CIDR
+(`PrivateSubnet3CIDR`)|`10.0.64.0/19`|(Optional) CIDR block for optional private subnet 3 located in Availability Zone 3.
+|===
+.Amazon EC2 configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Key pair name
+(`KeyPairName`)|`**__Requires input__**`|Public/private key pairs allow you to securely connect to your instance after it launches.|Tenancy
+(`HostType`)|`Shared`|Host type. If Dedicated or Dedicated Host is selected, hosts will be created in each Availability Zone.|BYOL AMI to use on dedicated host
+(`DedicatedHostAMI`)|`**__Blank string__**`|If host type is set to "Dedicated" or "Dedicated Host", you need to specify your imported BYOL AMI ID.
+|===
+.Active Directory configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|AD scenario type
+(`ADScenarioType`)|`AWS Directory Service for Microsoft AD (Enterprise Edition)`|Select the type of AD DS deployment to use: AWS Directory Service for Microsoft AD or managing your own Amazon EC2 AD instances.|Domain DNS name
+(`DomainDNSName`)|`example.com`|Fully qualified domain name (FQDN) of the forest root domain.|Domain NetBIOS name
+(`DomainNetBIOSName`)|`example`|NetBIOS name of the domain (up to 15 characters) for users of earlier versions of Windows.|Domain admin user name
+(`DomainAdminUser`)|`Admin`|User name for the account that will be added as domain administrator. This is separate from the default administrator account. Note: This user is used for Self-Managed AD Scenario, when using AWS Directory Service for Microsoft AD "Admin" is the default regardless of the value provided.  provided.|Domain admin password
+(`DomainAdminPassword`)|`**__Requires input__**`|Password for the domain admin user. Must be at least 8 characters containing letters, numbers, and symbols.
+|===
+.Self-managed Active Directory configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Domain controller 1 instance type
+(`ADServer1InstanceType`)|`m5.xlarge`|Amazon EC2 instance type for the first Active Directory instance.|Domain controller 1 NetBIOS name
+(`ADServer1NetBIOSName`)|`DC1`|NetBIOS name of the first Active Directory server (up to 15 characters).|Domain controller 1 private IP address
+(`ADServer1PrivateIP`)|`10.0.0.10`|Fixed private IP for the first Active Directory server located in Availability Zone 1.|Domain controller 2 instance type
+(`ADServer2InstanceType`)|`m5.xlarge`|Amazon EC2 instance type for the second Active Directory instance.|Domain controller 2 NetBIOS name
+(`ADServer2NetBIOSName`)|`DC2`|NetBIOS name of the second Active Directory server (up to 15 characters).|Domain controller 2 private IP address
+(`ADServer2PrivateIP`)|`10.0.32.10`|Fixed private IP for the second Active Directory server located in Availability Zone 2.
+|===
+.Remote Desktop Gateway configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Allowed RDGW external access CIDR
+(`RDGWCIDR`)|`**__Requires input__**`|Allowed CIDR block for external access to the Remote Desktop Gateway instances.|Number of RDGW hosts
+(`NumberOfRDGWHosts`)|`1`|Enter the number of Remote Desktop Gateway hosts to create.|RDGW instance type
+(`RDGWInstanceType`)|`t2.large`|Amazon EC2 instance type for the Remote Desktop Gateway instances.
+|===
+.SQL Server configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|SQL Server version
+(`SQLServerVersion`)|`2019`|Version of SQL Server to install on failover cluster nodes.|Service account name
+(`SQLServiceAccount`)|`sqlsa`|User name for the SQL Server service account. This account is a domain user.|Service account password
+(`SQLServiceAccountPassword`)|`**__Requires input__**`|Password for the SQL Server service account. Must be at least 8 characters, containing letters, numbers and symbols.|Amazon-provided SQL Server license
+(`SQLLicenseProvided`)|`yes`|License SQL Server from AWS Marketplace.|Availability group name
+(`AvailabiltyGroupName`)|`SQLAG1`|NetBIOS name of the Availablity Group (up to 15 characters).|SQL Server volume IOPS
+(`VolumeIops`)|`1000`|Provisioned IOPS for the SQL data, logs and tempDb volumes. This parameter is applicable only when the SQL Server volume type is set to "io1".|SQL Server volume size
+(`VolumeSize`)|`500`|Volume size for the SQL data, logs and tempDb volumes, in GiB.|SQL Server volume type
+(`VolumeType`)|`gp2`|Volume type for the SQL data, logs and tempDb volumes.|SQL Server 2016 installation media location
+(`SQL2016Media`)|`https://download.microsoft.com/download/9/0/7/907AD35F-9F9C-43A5-9789-52470555DB90/ENU/SQLServer2016SP1-FullSlipstream-x64-ENU.iso`|SQL Server 2016 installation media location|SQL Server 2017 installation media location
+(`SQL2017Media`)|`https://download.microsoft.com/download/E/F/2/EF23C21D-7860-4F05-88CE-39AA114B014B/SQLServer2017-x64-ENU.iso`|SQL Server 2017 installation media location|SQL Server 2019 installation media location
+(`SQL2019Media`)|`https://go.microsoft.com/fwlink/?linkid=866664`|SQL Server 2019 installation media location
+|===
+.Failover cluster configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Cluster NetBIOS name
+(`ClusterName`)|`WSFCCluster1`|NetBIOS name of the cluster (up to 15 characters).|File share witness type
+(`WitnessType`)|`Windows file share`|Type of file share to use for failover cluster witness.|Instance type for cluster nodes
+(`WSFCNodeInstanceType`)|`r5.2xlarge`|Amazon EC2 instance type for the failover cluster nodes.|Cluster node 1 NetBIOS name
+(`WSFCNode1NetBIOSName`)|`WSFCNode1`|NetBIOS name of the first failover cluster node (up to 15 characters).|Cluster node 1 private IP address 1
+(`WSFCNode1PrivateIP1`)|`10.0.0.100`|Primary private IP for the first cluster node located in Availability Zone 1.|Cluster node 1 private IP address 2
+(`WSFCNode1PrivateIP2`)|`10.0.0.101`|Secondary private IP for failover cluster on first cluster node.|Cluster node 1 private IP address 3
+(`WSFCNode1PrivateIP3`)|`10.0.0.102`|Third private IP for SQL Server availability group listener on first cluster node.|Cluster node 2 NetBIOS name
+(`WSFCNode2NetBIOSName`)|`WSFCNode2`|NetBIOS name of the second WSFC node (up to 15 characters).|Cluster node 2 private IP address 1
+(`WSFCNode2PrivateIP1`)|`10.0.32.100`|Primary private IP for the second cluster node located in Availability Zone 2.|Cluster node 2 private IP address 2
+(`WSFCNode2PrivateIP2`)|`10.0.32.101`|Secondary private IP for failover cluster on second cluster node.|Cluster node 2 private IP address 3
+(`WSFCNode2PrivateIP3`)|`10.0.32.102`|Third private IP for SQL Server availability group listener on second cluster node.|Cluster node 3 NetBIOS name
+(`WSFCNode3NetBIOSName`)|`WSFCNode3`|NetBIOS name of the optional third WSFC node (up to 15 characters).|Cluster node 3 private IP address 1
+(`WSFCNode3PrivateIP1`)|`10.0.64.100`|Primary private IP for the optional third cluster node located in Availability Zone 3.|Cluster node 3 private IP address 2
+(`WSFCNode3PrivateIP2`)|`10.0.64.101`|Secondary private IP for failover cluster on optional third cluster node.|Cluster node 3 private IP address 3
+(`WSFCNode3PrivateIP3`)|`10.0.64.102`|Third private IP for SQL Server availability group listener on optional third cluster node.|File server NetBIOS name
+(`WSFCFileServerNetBIOSName`)|`WSFCFileServer`|NetBIOS name of the witness file server (up to 15 characters).|File server instance type
+(`WSFCFileServerInstanceType`)|`m5.large`|Amazon EC2 instance type for a fileserver for witness and replication folders.|File server private IP address
+(`WSFCFileServerPrivateIP`)|`10.0.0.200`|Primary private IP for the fileserver located in Availability Zone 1.
+|===
+.AWS Quick Start configuration
+[width="100%",cols="16%,11%,73%",options="header",]
+|===
+|Parameter label (name) |Default value|Description|Quick Start S3 bucket name
+(`QSS3BucketName`)|`aws-quickstart`|S3 bucket name for the Quick Start assets. This name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).|Quick Start S3 bucket region
+(`QSS3BucketRegion`)|`us-east-1`|The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.|Quick Start S3 key prefix
+(`QSS3KeyPrefix`)|`quickstart-microsoft-sql/`|S3 key prefix for the Quick Start assets. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).
+|===
