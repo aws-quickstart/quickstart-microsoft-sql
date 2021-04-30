@@ -10,7 +10,7 @@ By launching your instances in separate Regions, you can design your application
 [[automatic-failover]]
 === Automatic failover
 
-Deploying the Quick Start with the *default parameters* configures a two-node automatic failover cluster with a file share witness. On this cluster, it deploys a SQL Server Always On availability group with two availability replicas.
+Deploying the Quick Start with the *default parameters* configures a two-node automatic failover cluster with a file-share witness. On this cluster, it deploys a SQL Server Always On availability group with two availability replicas.
 
 [#prereq1]
 .SQL Server Always On availability groups and automatic failover
@@ -22,7 +22,7 @@ image::../images/image5.png[image,width=648,height=368]
 * Automatic failover between cluster nodes
 * Automatic failover between Availability Zones
 
-However, the Quick Start default implementation doesn’t provide automatic failover in every case. For example, the loss of Availability Zone 1, which contains the primary node and file share witness, would prevent automatic failover to Availability Zone 2. This is because the cluster would fail as it loses quorum. In this scenario, you could follow manual disaster recovery steps that include restarting the cluster service and forcing quorum on the second cluster node (e.g., WSFCNode2) to restore application availability. The Quick Start also provides an option to deploy into three Availability Zones. This deployment option can mitigate this loss of quorum in the case of a failure of a single node. However, you can select this option only in AWS Regions that include three or more Availability Zones; for a current list, see the https://aws.amazon.com/about-aws/global-infrastructure/[AWS Global Infrastructure] webpage.
+However, the Quick Start default implementation doesn’t provide automatic failover in every case. For example, the loss of Availability Zone 1, which contains the primary node and file-share witness, would prevent automatic failover to Availability Zone 2. This is because the cluster would fail as it loses quorum. In this scenario, you could follow manual disaster recovery steps that include restarting the cluster service and forcing quorum on the second cluster node (e.g., WSFCNode2) to restore application availability. The Quick Start also provides an option to deploy into three Availability Zones. This deployment option can mitigate this loss of quorum in the case of a failure of a single node. However, you can select this option only in AWS Regions that include three or more Availability Zones; for a current list, see the https://aws.amazon.com/about-aws/global-infrastructure/[AWS Global Infrastructure] webpage.
 
 We recommend that you consult the Microsoft SQL Server documentation and customize some of the steps described in this guide or follow additional steps (e.g., deploy additional cluster nodes and configure them as readable secondary replicas) to deploy a solution that best meets your business, IT, and security requirements.
 
@@ -70,7 +70,7 @@ The default disk layout for SQL Server in this Quick Start uses the following EB
 * One General Purpose SSD volume (500 GiB) to host the SQL Server log files (E:)
 * One General Purpose SSD volume (500 GiB) to host the SQL Server tempdb and backup files (F:)
 
-Figure 6 shows the disk layout on each SQL Server node. The Z: drive is instance storage that can be used for ephemeral data, such as the operating system page file. Keep in mind that data on instance storage will be lost when you stop your EC2 instance.
+<<prereq2>> shows the disk layout on each SQL Server node. The Z: drive is instance storage that can be used for ephemeral data, such as the operating system page file. Keep in mind that data on instance storage will be lost when you stop your EC2 instance.
 
 [#prereq2]
 .WSFC node disk layout
@@ -94,6 +94,6 @@ image::../images/image7.png[image,width=618,height=201]
 [[windows-server-failover-clustering]]
 === Windows Server Failover Clustering
 
-Once your Windows Server instances have been deployed and domain-joined, you’re ready to build the cluster. The AWS CloudFormation templates carry out this task when deploying the second node. If you use the default template parameter settings, the Quick Start executes Windows PowerShell commands to complete this task by using the https://github.com/PowerShell/xFailOverCluster[xFailOverCluster] PowerShell DSC module.
+Once your Windows Server instances have been deployed and domain-joined, you’re ready to build the cluster. The AWS CloudFormation templates carry out this task when deploying the second node. If you use the default template parameter settings, the Quick Start executes Windows PowerShell commands to complete this task by using the https://github.com/PowerShell/xFailOverCluster[xFailOverCluster^] PowerShell DSC module.
 
-You can observe the default configuration for the failover cluster and the availability group by looking at the Node1Config.ps1 and CreateAGNode1.ps1 scripts in the https://fwd.aws/Ap76n[GitHub repository] for the Quick Start.
+You can observe the default configuration for the failover cluster and the availability group by looking at the `Node1Config.ps1` and `CreateAGNode1.ps1` scripts in the https://fwd.aws/Ap76n?[GitHub repository^] for the Quick Start.

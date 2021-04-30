@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
-<title>SQL Server with Windows Server Failover Clustering on the AWS Cloud</title>
+<title>SQL Server with Always On Replication on the AWS Cloud</title>
 <style>
 
 /* Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -790,10 +790,15 @@ p.footer-text a{color:#d7d8d8}
 <div id="toctitle"></div>
 <ul class="sectlevel1">
 <li><a href="#_overview">Overview</a></li>
-<li><a href="#_sql_server_with_windows_server_failover_clustering_on_aws">SQL Server with Windows Server Failover Clustering on AWS</a></li>
-<li><a href="#_cost">Cost</a></li>
+<li><a href="#_sql_server_with_always_on_replication_on_aws">SQL Server with Always On Replication on AWS</a></li>
+<li><a href="#_aws_costs">AWS costs</a></li>
 <li><a href="#_software_licenses">Software licenses</a></li>
-<li><a href="#_architecture">Architecture</a></li>
+<li><a href="#_architecture">Architecture</a>
+<ul class="sectlevel2">
+<li><a href="#_comparison_with_sql_server_failover_cluster_instance">Comparison with SQL Server Failover Cluster Instance</a></li>
+<li><a href="#_advantages_and_disadvantages">Advantages and disadvantages</a></li>
+</ul>
+</li>
 <li><a href="#_planning_the_deployment">Planning the deployment</a>
 <ul class="sectlevel2">
 <li><a href="#_specialized_knowledge">Specialized knowledge</a></li>
@@ -810,16 +815,25 @@ p.footer-text a{color:#d7d8d8}
 </li>
 <li><a href="#_deployment_steps">Deployment steps</a>
 <ul class="sectlevel2">
-<li><a href="#_sign_in_to_your_aws_account">Sign in to your AWS account</a></li>
+<li><a href="#_confirm_your_aws_account_configuration">Confirm your AWS account configuration</a></li>
 <li><a href="#_launch_the_quick_start">Launch the Quick Start</a></li>
-<li><a href="#_launch_into_a_new_vpc">Launch into a new VPC</a></li>
-<li><a href="#_launch_into_an_existing_vpc">Launch into an existing VPC</a></li>
 </ul>
 </li>
+<li><a href="#_post_deployment_steps">Post-deployment steps</a>
+<ul class="sectlevel2">
+<li><a href="#_run_windows_updates">Run Windows updates</a></li>
 <li><a href="#_post_launch_task">Post-launch task</a></li>
+</ul>
+</li>
 <li><a href="#_test_the_deployment">Test the deployment</a></li>
 <li><a href="#_faq">FAQ</a></li>
-<li><a href="#_additional_resources">Additional Resources</a></li>
+<li><a href="#_additional_resources">Additional resources</a></li>
+<li><a href="#_parameter_reference">Parameter reference</a>
+<ul class="sectlevel2">
+<li><a href="#_parameters_for_deploying_into_a_new_vpc">Parameters for deploying into a new VPC</a></li>
+<li><a href="#_parameters_for_deploying_into_an_existing_vpc">Parameters for deploying into an existing VPC</a></li>
+</ul>
+</li>
 <li><a href="#_send_us_feedback">Send us feedback</a></li>
 <li><a href="#_quick_start_reference_deployments">Quick Start reference deployments</a></li>
 <li><a href="#_github_repository">GitHub repository</a></li>
@@ -830,7 +844,7 @@ p.footer-text a{color:#d7d8d8}
 <div id="content">
 <div id="preamble">
 <div class="sectionbody">
-<h2 id="_sql_server_with_windows_server_failover_clustering_on_the_aws_cloud" class="discrete text-center">SQL Server with Windows Server Failover Clustering on the AWS Cloud</h2>
+<h2 id="_sql_server_with_always_on_replication_on_the_aws_cloud" class="discrete text-center">SQL Server with Always On Replication on the AWS Cloud</h2>
 <h2 id="_quick_start_reference_deployment" class="discrete text-left text-center">Quick Start Reference Deployment</h2>
 <div class="imageblock text-center">
 <div class="content">
@@ -838,8 +852,8 @@ p.footer-text a{color:#d7d8d8}
 </div>
 </div>
 <div class="paragraph text-center">
-<p><strong>October 2020</strong><br>
-<em>Aaron Lima and Dave May, Amazon Web Services</em></p>
+<p><strong>April 2021</strong><br>
+<em>AWS Quick Start team</em></p>
 </div>
 <div class="admonitionblock tip text-left">
 <table>
@@ -871,7 +885,7 @@ report bugs, or submit feature ideas for this Quick Start.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sql_server_with_windows_server_failover_clustering_on_aws">SQL Server with Windows Server Failover Clustering on AWS</h2>
+<h2 id="_sql_server_with_always_on_replication_on_aws">SQL Server with Always On Replication on AWS</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This Quick Start implements a highly available environment that includes Windows Server and SQL Server running on Amazon Elastic Compute Cloud (Amazon EC2), using the Always On availability groups feature of SQL Server Enterprise edition. This infrastructure provides the underpinnings for many Microsoft technology-based solutions for the enterprise, including SharePoint and .NET Framework applications.</p>
@@ -904,11 +918,10 @@ report bugs, or submit feature ideas for this Quick Start.
 </div>
 </div>
 <div class="sect1">
-<h2 id="_cost">Cost</h2>
+<h2 id="_aws_costs">AWS costs</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>You are responsible for the cost of the AWS services used while running
-this Quick Start. There is no additional cost for
+<p>You are responsible for the cost of the AWS services and any third-party licenses used while running this Quick Start. There is no additional cost for
 using the Quick Start.</p>
 </div>
 <div class="paragraph">
@@ -924,7 +937,7 @@ see the pricing pages for each AWS service you use. Prices are subject to change
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-gettingstarted-turnonreports.html" target="_blank" rel="noopener">create AWS Cost and Usage Reports</a> to deliver billing metrics to an Amazon Simple Storage Service (Amazon S3) bucket in your account. These reports provide cost estimates based on usage throughout each month and aggregate the data at the end of the month. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-costusage.html" target="_blank" rel="noopener">What are AWS Cost and Usage Reports?</a>
+After you deploy the Quick Start, create <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-gettingstarted-turnonreports.html" target="_blank" rel="noopener">AWS Cost and Usage Reports</a> to deliver billing metrics to an Amazon Simple Storage Service (Amazon S3) bucket in your account. These reports provide cost estimates based on usage throughout each month and aggregate the data at the end of the month. For more information, see <a href="https://docs.aws.amazon.com/cur/latest/userguide/what-is-cur.html" target="_blank" rel="noopener">What are AWS Cost and Usage Reports?</a>
 </td>
 </tr>
 </table>
@@ -938,23 +951,23 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <p>The AWS CloudFormation template for this Quick Start includes configuration parameters that you can customize. Some of these settings, such as instance type, volume size, or opting to use the Amazon-provided image for SQL Server, will affect the cost of deployment. See the pricing pages for each AWS service you will be using for cost estimates.</p>
 </div>
 <div class="paragraph">
-<p><strong>Tip</strong> After you deploy the Quick Start, we recommend that you enable the <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-gettingstarted-turnonreports.html">AWS Cost and Usage Report</a> to track costs associated with the Quick Start. This report delivers billing metrics to an Amazon Simple Storage Service (Amazon S3) bucket in your account. It provides cost estimates based on usage throughout each month and finalizes the data at the end of the month. For more information about the report, see the <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-costusage.html">AWS documentation</a>.</p>
-</div>
-<div class="paragraph">
 <p>The Quick Start provides three licensing options for SQL Server Enterprise edition. You can:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Install a trial version of SQL Server, SQL Server 2017, or SQL Server 2019 Enterprise edition from the <a href="http://www.microsoft.com/evalcenter/">Microsoft Evaluation Center</a>.</p>
+<p>Install a trial version of SQL Server, SQL Server 2017, or SQL Server 2019 Enterprise edition from the <a href="http://www.microsoft.com/evalcenter/" target="_blank" rel="noopener">Microsoft Evaluation Center</a>.</p>
 </li>
 <li>
-<p>Use the Amazon Machine Image (AMI) for Windows Server with license costs and SQL Server Enterprise edition included.</p>
+<p>Use the Amazon Machine Image (AMI) for Windows Server with license costs and SQL Server Enterprise edition included. When using AWS-provided SQL licensing, you don&#8217;t need a copy of SQL Server 2019.</p>
 </li>
 <li>
-<p>Use your volume licensing software and mobilize the license. For development and test environments, you can leverage your existing MSDN licenses for SQL Server by using Amazon EC2 Dedicated Instances. For more information about these options, see the <a href="https://aws.amazon.com/windows/resources/licensing/">Microsoft Licensing on AWS</a> webpage.</p>
+<p>Use your volume licensing software and mobilize the license. For development and test environments, you can leverage your existing MSDN licenses for SQL Server by using Amazon EC2 Dedicated Instances. When using your own SQL license, you need a copy of SQL Server 2019.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>For more information about these options, see the <a href="https://aws.amazon.com/windows/resources/licensing/" target="_blank" rel="noopener">Microsoft Licensing on AWS</a> webpage.</p>
 </div>
 <div class="paragraph">
 <p>This Quick Start launches one of the Windows Server AMIs listed in the following table, depending on the parameters you set when you deploy the Quick Start.</p>
@@ -1006,12 +1019,12 @@ After you deploy the Quick Start, <a href="https://docs.aws.amazon.com/awsaccoun
 <div class="sectionbody">
 <div class="paragraph">
 <p>Deploying this Quick Start for a new virtual private cloud (VPC) with
-default parameters builds the following SQL Server environment in the
+default parameters builds the following SQL Server with Always On Replication environment in the
 AWS Cloud.</p>
 </div>
 <div id="architecture1" class="imageblock">
 <div class="content">
-<img src="images/image1.png" alt="image" width="648" height="472">
+<img src="images/SQL-replication-architecture-diagram.png" alt="architecture1">
 </div>
 <div class="title">Figure 1. WSFC and SQL Server architecture on AWS (default configuration)</div>
 </div>
@@ -1021,28 +1034,21 @@ AWS Cloud.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>A VPC configured with public and private subnets across two Availability Zones. This provides the network infrastructure for your SQL Server deployment. You can optionally choose a third Availability Zone for the file share witness or for an additional SQL Server cluster node, as shown in Figure 2.*</p>
-</li>
-</ul>
-</div>
+<p>A VPC configured with public and private subnets across two Availability Zones. This provides the network infrastructure for your SQL Server deployment. You can optionally choose a third Availability Zone for the file-share witness or for an additional SQL Server cluster node, as shown in <a href="#architecture2">Figure 2</a>.*</p>
 <div id="architecture2" class="imageblock">
 <div class="content">
 <img src="images/image2.png" alt="image" width="648" height="356">
 </div>
 <div class="title">Figure 2. WSFC and SQL Server architecture on AWS with three Availability Zones</div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
 <p>In the public subnets, Windows Server-based Remote Desktop Gateway (RD Gateway) instances and network address translation (NAT) gateways for outbound internet access.*</p>
 </li>
 <li>
 <p>In the private subnets, Active Directory Domain Services (AD DS) domain controllers, which are configured by AWS Systems Manager Automation documents.*</p>
 <div class="paragraph">
-<p>The Quick Start uses AWS Directory Service to provision AD DS and to manage tasks such as monitoring domain controllers, and configuring backups and snapshots. You can also choose to add AD DS domain controllers as EC2 instances to the architecture and manage these yourself, as shown in Figures 3 and 4.</p>
-</div>
-</li>
-</ul>
+<p>The Quick Start uses AWS Directory Service to provision AD DS and to manage tasks such as monitoring domain controllers, and configuring backups and snapshots. You can also choose to add AD DS domain controllers as EC2 instances to the architecture and manage these yourself, as shown in <a href="#architecture3">Figure 3</a> and <a href="#architecture4">Figure 4</a>.</p>
 </div>
 <div id="architecture3" class="imageblock">
 <div class="content">
@@ -1056,10 +1062,9 @@ AWS Cloud.</p>
 </div>
 <div class="title">Figure 4. WSFC and SQL Server architecture with three Availability Zones and AD DS on Amazon EC2</div>
 </div>
-<div class="ulist">
-<ul>
+</li>
 <li>
-<p>In the private subnets, Windows Server-based instances as WSFC nodes, and SQL Server Enterprise edition with SQL Server Always On availability groups on each node. This architecture provides redundant databases along with a witness server to ensure that a quorum can vote for the node to be promoted to primary; the witness server can optionally be replaced with an Amazon FSx Windows file share. The default architecture mirrors an on-premises architecture of two SQL Server instances spanning two subnets placed in two different Availability Zones.</p>
+<p>In the private subnets, Windows Server-based instances as WSFC nodes, and SQL Server Enterprise edition with SQL Server Always On availability groups on each node. This architecture provides redundant databases along with a witness server to ensure that a quorum can vote for the node to be promoted to primary; you can optionally replace the witness server with an <a href="https://aws.amazon.com/fsx/windows/" target="_blank" rel="noopener">Amazon FSx for Windows File Server</a> file share. The default architecture mirrors an on-premises architecture of two SQL Server instances spanning two subnets placed in two different Availability Zones.</p>
 </li>
 <li>
 <p>AWS Secrets Manager for password storage.</p>
@@ -1072,6 +1077,86 @@ AWS Cloud.</p>
 <div class="paragraph">
 <p><span class="small">*The template that deploys the Quick Start into an existing VPC skips the components marked by asterisks and prompts you for your existing VPC configuration.</span></p>
 </div>
+<div class="sect2">
+<h3 id="_comparison_with_sql_server_failover_cluster_instance">Comparison with SQL Server Failover Cluster Instance</h3>
+<div class="paragraph">
+<p>To better understand the architecture of the SQL Server with Always On Replication Quick Start, it&#8217;s helpful to compare with the <a href="https://fwd.aws/EMjnp?" target="_blank" rel="noopener">Quick Start for SQL Server Failover Cluster Instance</a> (FCI). Both Quick Starts are architected to ensure high availability. Both have EC2 instances clustered using WSFC. Both have database files stored in multiple Availability Zones. What&#8217;s different is the way each Quick Start accomplishes database high availability.</p>
+</div>
+<div class="paragraph">
+<p>The FCI-based architecture requires only one SQL Server license. With the FCI Quick Start, database-related files aren&#8217;t replicated across the WSFC cluster, and SQL Server is not installed in the local file systems. Instead, this Quick Start creates an Amazon FSx file system and installs SQL Server there. The EC2 instances (FCI nodes) share this file system, which also stores all the SQL database files and log files. In addition, this shared file system acts as the cluster&#8217;s file-share witness.</p>
+</div>
+<div class="paragraph">
+<p><strong>The replication-based architecture, on the other hand, requires an SQL Server license for each EC2 instance.</strong> That&#8217;s because it requires a full installation of SQL Server (Standard or Enterprise edition) on each EC2 instance.</p>
+</div>
+<div id="replication" class="imageblock">
+<div class="content">
+<img src="images/zoom-in-on-replication.png" alt="replication" width="70%">
+</div>
+<div class="title">Figure 5. Replication close up</div>
+</div>
+<div class="paragraph">
+<p>As <a href="#replication">Figure 5</a> shows, each EC2 instance has a root EBS volume plus three other EBS volumes attached for storing SQL database-related files: the database files themselves, database log files, and <code>tempdb</code> files. An <a href="https://docs.microsoft.com/en-us/sql/database-engine/availability-groups/windows/overview-of-always-on-availability-groups-sql-server" target="_blank" rel="noopener">Always On availability group</a> is configured across both servers. Databases installed in the availability group have their database and log files replicated across the cluster. If the primary server in the cluster becomes unavailable, the secondary server is promoted to become the primary, and traffic to the availability group is routed to it.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_advantages_and_disadvantages">Advantages and disadvantages</h3>
+<div class="paragraph">
+<p>The architecture of each SQL Server Quick Start has advantages and disadvantages.</p>
+</div>
+<div class="paragraph">
+<p><strong>SQL Server with Always On Replication Quick Start:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Advantages:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>The EBS volume type, capacity, and IOPS can be configured, allowing flexibility.</p>
+</li>
+<li>
+<p>It supports both AWS-provided licensing and Bring Your Own License models for Microsoft SQL.</p>
+</li>
+</ul>
+</div>
+</li>
+<li>
+<p>Disadvantage:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>Each WSFC node with SQL Server installed requires a SQL Server license, increasing cost.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>SQL Server FCI Quick Start:</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Advantage: It requires only one SQL Server license.</p>
+</li>
+<li>
+<p>Disadvantages:</p>
+<div class="ulist">
+<ul>
+<li>
+<p>It relies on an Amazon FSx Multi-AZ file system, which is not supported in all AWS Regions.</p>
+</li>
+<li>
+<p>It requires the customer to provide a SQL Server .iso file and license since AWS-provided SQL licensing is not supported.</p>
+</li>
+</ul>
+</div>
+</li>
+</ul>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -1080,10 +1165,13 @@ AWS Cloud.</p>
 <div class="sect2">
 <h3 id="_specialized_knowledge">Specialized knowledge</h3>
 <div class="paragraph">
-<p>This deployment requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started with AWS</a> and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">Training and Certification</a>. These sites provide materials for learning how to design, deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
+<p>This deployment requires a moderate level of familiarity with
+AWS services. If you’re new to AWS, see <a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started Resource Center</a>
+and <a href="https://aws.amazon.com/training/" target="_blank" rel="noopener">AWS Training and Certification</a>. These sites provide materials for learning how to design,
+deploy, and operate your infrastructure and applications on the AWS Cloud.</p>
 </div>
 <div class="paragraph">
-<p>This deployment guide also requires a moderate level of familiarity with AWS services. If you’re new to AWS, visit the <a href="https://aws.amazon.com/getting-started/">Getting Started Resource Center</a> and the <a href="https://aws.amazon.com/training/">AWS Training and Certification website</a> for materials and programs that can help you develop the skills to design, deploy, and operate your infrastructure and applications on the AWS Cloud. For more information about the AWS services that are used in this Quick Start, see the <a href="#additional-resources">Additional resources</a> section.</p>
+<p>For more information about the AWS services that are used in this Quick Start, see the <a href="#additional-resources">Additional resources</a> section.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1098,7 +1186,7 @@ AWS Cloud.</p>
 <div class="sect2">
 <h3 id="_technical_requirements">Technical requirements</h3>
 <div class="paragraph">
-<p>Before you launch the Quick Start, your account must be configured as specified in the following table. Otherwise, deployment might fail.</p>
+<p>Before you launch the Quick Start, review the following information and ensure that your account is properly configured. Otherwise, deployment might fail.</p>
 </div>
 <div class="sect3">
 <h4 id="_resource_quotas">Resource quotas</h4>
@@ -1155,13 +1243,10 @@ AWS Cloud.</p>
 <div class="sect3">
 <h4 id="_supported_regions">Supported Regions</h4>
 <div class="paragraph">
-<p><a href="https://aws.amazon.com/about-aws/global-infrastructure/">Regions</a></p>
+<p>This deployment includes AWS Secrets Manager, which isn’t supported in all <a href="https://aws.amazon.com/about-aws/global-infrastructure/" target="_blank" rel="noopener">AWS Regions</a>. For a current list of supported Regions, see <a href="https://docs.aws.amazon.com/general/latest/gr/asm.html">Service Endpoints and Quotas</a> in the AWS documentation. Also, if you’re planning to deploy an architecture with three Availability Zones, choose an AWS Region that supports three Availability Zones.</p>
 </div>
 <div class="paragraph">
-<p>This deployment includes AWS Secrets Manager, which isn’t currently supported in all AWS Regions. For a current list of supported regions, see <a href="https://docs.aws.amazon.com/general/latest/gr/asm.html">Service Endpoints and Quotas</a> in the AWS documentation. Also, if you’re planning to deploy an architecture with three Availability Zones, choose an AWS Region that supports three zones.</p>
-</div>
-<div class="paragraph">
-<p>If using non-default settings, including dedicated hosts for the SQL servers and an FSx file share for the file share witness, see the AWS documentation to ensure regional compatibility.</p>
+<p>If using nondefault settings, including dedicated hosts for the SQL servers and an FSx file share for the file-share witness, see the AWS documentation to ensure regional compatibility.</p>
 </div>
 <div class="admonitionblock tip">
 <table>
@@ -1170,19 +1255,10 @@ AWS Cloud.</p>
 <i class="fa icon-tip" title="Tip"></i>
 </td>
 <td class="content">
-Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.amazon.com/general/latest/gr/rande-manage.html" target="_blank" rel="noopener">Managing AWS Regions</a>.
+Certain Regions are available on an opt-in basis. For more information, see <a href="https://docs.aws.amazon.com/general/latest/gr/rande-manage.html" target="_blank" rel="noopener">Managing AWS Regions</a>.
 </td>
 </tr>
 </table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_ec2_key_pairs">EC2 key pairs</h4>
-<div class="paragraph">
-<p>Make sure that at least one <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pair</a> exists in your AWS account in the Region where you plan to deploy the Quick Start. Make note of the key pair name. You need it during deployment. To create a key pair, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html" target="_blank" rel="noopener">Amazon EC2 key pairs and Linux instances</a>.</p>
-</div>
-<div class="paragraph">
-<p>For testing or proof-of-concept purposes, we recommend creating a new key pair instead of using one that’s already being used by a production instance.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1207,13 +1283,13 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <div class="sect2">
 <h3 id="automatic-failover">Automatic failover</h3>
 <div class="paragraph">
-<p>Deploying the Quick Start with the <strong>default parameters</strong> configures a two-node automatic failover cluster with a file share witness. On this cluster, it deploys a SQL Server Always On availability group with two availability replicas.</p>
+<p>Deploying the Quick Start with the <strong>default parameters</strong> configures a two-node automatic failover cluster with a file-share witness. On this cluster, it deploys a SQL Server Always On availability group with two availability replicas.</p>
 </div>
 <div id="prereq1" class="imageblock">
 <div class="content">
 <img src="images/image5.png" alt="image" width="648" height="368">
 </div>
-<div class="title">Figure 5. SQL Server Always On availability groups and automatic failover</div>
+<div class="title">Figure 6. SQL Server Always On availability groups and automatic failover</div>
 </div>
 <div class="paragraph">
 <p><a id="_Deployment_Scenarios"></a>The Quick Start implementation supports the following scenarios:</p>
@@ -1232,7 +1308,7 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 </ul>
 </div>
 <div class="paragraph">
-<p>However, the Quick Start default implementation doesn’t provide automatic failover in every case. For example, the loss of Availability Zone 1, which contains the primary node and file share witness, would prevent automatic failover to Availability Zone 2. This is because the cluster would fail as it loses quorum. In this scenario, you could follow manual disaster recovery steps that include restarting the cluster service and forcing quorum on the second cluster node (e.g., WSFCNode2) to restore application availability. The Quick Start also provides an option to deploy into three Availability Zones. This deployment option can mitigate this loss of quorum in the case of a failure of a single node. However, you can select this option only in AWS Regions that include three or more Availability Zones; for a current list, see the <a href="https://aws.amazon.com/about-aws/global-infrastructure/">AWS Global Infrastructure</a> webpage.</p>
+<p>However, the Quick Start default implementation doesn’t provide automatic failover in every case. For example, the loss of Availability Zone 1, which contains the primary node and file-share witness, would prevent automatic failover to Availability Zone 2. This is because the cluster would fail as it loses quorum. In this scenario, you could follow manual disaster recovery steps that include restarting the cluster service and forcing quorum on the second cluster node (e.g., WSFCNode2) to restore application availability. The Quick Start also provides an option to deploy into three Availability Zones. This deployment option can mitigate this loss of quorum in the case of a failure of a single node. However, you can select this option only in AWS Regions that include three or more Availability Zones; for a current list, see the <a href="https://aws.amazon.com/about-aws/global-infrastructure/">AWS Global Infrastructure</a> webpage.</p>
 </div>
 <div class="paragraph">
 <p>We recommend that you consult the Microsoft SQL Server documentation and customize some of the steps described in this guide or follow additional steps (e.g., deploy additional cluster nodes and configure them as readable secondary replicas) to deploy a solution that best meets your business, IT, and security requirements.</p>
@@ -1308,13 +1384,13 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 </ul>
 </div>
 <div class="paragraph">
-<p>Figure 6 shows the disk layout on each SQL Server node. The Z: drive is instance storage that can be used for ephemeral data, such as the operating system page file. Keep in mind that data on instance storage will be lost when you stop your EC2 instance.</p>
+<p><a href="#prereq2">Figure 7</a> shows the disk layout on each SQL Server node. The Z: drive is instance storage that can be used for ephemeral data, such as the operating system page file. Keep in mind that data on instance storage will be lost when you stop your EC2 instance.</p>
 </div>
 <div id="prereq2" class="imageblock">
 <div class="content">
 <img src="images/image6.png" alt="image" width="535" height="198">
 </div>
-<div class="title">Figure 6. WSFC node disk layout</div>
+<div class="title">Figure 7. WSFC node disk layout</div>
 </div>
 </div>
 <div class="sect2">
@@ -1342,16 +1418,16 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <div class="content">
 <img src="images/image7.png" alt="image" width="618" height="201">
 </div>
-<div class="title">Figure 7. Defining WSFC node IP addresses</div>
+<div class="title">Figure 8. Defining WSFC node IP addresses</div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="windows-server-failover-clustering">Windows Server Failover Clustering</h3>
 <div class="paragraph">
-<p>Once your Windows Server instances have been deployed and domain-joined, you’re ready to build the cluster. The AWS CloudFormation templates carry out this task when deploying the second node. If you use the default template parameter settings, the Quick Start executes Windows PowerShell commands to complete this task by using the <a href="https://github.com/PowerShell/xFailOverCluster">xFailOverCluster</a> PowerShell DSC module.</p>
+<p>Once your Windows Server instances have been deployed and domain-joined, you’re ready to build the cluster. The AWS CloudFormation templates carry out this task when deploying the second node. If you use the default template parameter settings, the Quick Start executes Windows PowerShell commands to complete this task by using the <a href="https://github.com/PowerShell/xFailOverCluster" target="_blank" rel="noopener">xFailOverCluster</a> PowerShell DSC module.</p>
 </div>
 <div class="paragraph">
-<p>You can observe the default configuration for the failover cluster and the availability group by looking at the Node1Config.ps1 and CreateAGNode1.ps1 scripts in the <a href="https://fwd.aws/Ap76n">GitHub repository</a> for the Quick Start.</p>
+<p>You can observe the default configuration for the failover cluster and the availability group by looking at the <code>Node1Config.ps1</code> and <code>CreateAGNode1.ps1</code> scripts in the <a href="https://fwd.aws/Ap76n?" target="_blank" rel="noopener">GitHub repository</a> for the Quick Start.</p>
 </div>
 <div class="sect3">
 <h4 id="_deployment_options">Deployment options</h4>
@@ -1361,15 +1437,15 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <div class="ulist">
 <ul>
 <li>
-<p><strong>Deploy SQL Server into a new VPC</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys SQL Server into this new VPC.</p>
+<p><strong>Deploy SQL Server with Always On Replication into a new VPC</strong>. This option builds a new AWS environment consisting of the VPC, subnets, NAT gateways, security groups, bastion hosts, and other infrastructure components. It then deploys SQL Server with Always On Replication into this new VPC.</p>
 </li>
 <li>
-<p><strong>Deploy SQL Server into an existing VPC</strong>. This option provisions SQL Server in your existing AWS infrastructure.</p>
+<p><strong>Deploy SQL Server with Always On Replication into an existing VPC</strong>. This option provisions SQL Server with Always On Replication in your existing AWS infrastructure.</p>
 </li>
 </ul>
 </div>
 <div class="paragraph">
-<p>The Quick Start provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and SQL Server settings, as discussed later in this guide.</p>
+<p>The Quick Start provides separate templates for these options. It also lets you configure Classless Inter-Domain Routing (CIDR) blocks, instance types, and SQL Server with Always On Replication settings, as discussed later in this guide.</p>
 </div>
 </div>
 </div>
@@ -1379,7 +1455,7 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 <h2 id="_deployment_steps">Deployment steps</h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="_sign_in_to_your_aws_account">Sign in to your AWS account</h3>
+<h3 id="_confirm_your_aws_account_configuration">Confirm your AWS account configuration</h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
@@ -1393,41 +1469,6 @@ Certain Regions are available on an opt-in basis. See <a href="https://docs.aws.
 </div>
 <div class="sect2">
 <h3 id="_launch_the_quick_start">Launch the Quick Start</h3>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-You are responsible for the cost of the AWS services used while running this Quick Start reference deployment. There is no additional cost for using this Quick Start. For full details, see the pricing pages for each AWS service used by this Quick Start. Prices are subject to change.
-</td>
-</tr>
-</table>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Sign in to your AWS account, and choose one of the following options to launch the AWS CloudFormation template. For help with choosing an option, see <a href="#_deployment_options">deployment options</a> earlier in this guide.</p>
-</li>
-</ol>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<tbody>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/7j9Ad" target="_blank" rel="noopener">Deploy SQL Server into a new VPC on AWS</a></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://github.com/aws-quickstart/quickstart-microsoft-sql/blob/main/templates/sql-master.template" target="_blank" rel="noopener">View template</a></p></td>
-</tr>
-<tr>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/d3wqB" target="_blank" rel="noopener">Deploy SQL Server into an existing VPC on AWS</a></p></td>
-<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://github.com/aws-quickstart/quickstart-microsoft-sql/blob/main/templates/sql.template" target="_blank" rel="noopener">View template</a></p></td>
-</tr>
-</tbody>
-</table>
 <div class="admonitionblock warning">
 <table>
 <tr>
@@ -1435,33 +1476,267 @@ You are responsible for the cost of the AWS services used while running this Qui
 <i class="fa icon-warning" title="Warning"></i>
 </td>
 <td class="content">
-If you’re deploying SQL Server into an existing VPC, make sure that your VPC has two private subnets in different Availability Zones for the workload instances, and that the subnets aren’t shared. This Quick Start doesn’t support <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html" target="_blank" rel="noopener">shared subnets</a>. These subnets require <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html" target="_blank" rel="noopener">NAT gateways</a> in their route tables, to allow the instances to download packages and software without exposing them to the internet. Also make sure that the domain name option in the DHCP options is configured as explained in <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_DHCP_Options.html" target="_blank" rel="noopener">DHCP options sets</a>. You provide your VPC settings when you launch the Quick Start.
+If you’re deploying SQL Server with Always On Replication into an existing VPC, make sure that your VPC has two private subnets in different Availability Zones for the workload instances, and that the subnets aren’t shared. This Quick Start doesn’t support <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html" target="_blank" rel="noopener">shared subnets</a>. These subnets require <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html" target="_blank" rel="noopener">NAT gateways</a> in their route tables, to allow the instances to download packages and software without exposing them to the internet. Also make sure that the domain name option in the DHCP options is configured as explained in <a href="http://docs.aws.amazon.com/AmazonVPC/latest/UserGuide/VPC_DHCP_Options.html" target="_blank" rel="noopener">DHCP options sets</a>. You provide your VPC settings when you launch the Quick Start.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Each deployment takes about 2 hours to complete.</p>
+<p>Each deployment takes about 2.25 hours to complete.</p>
 </div>
 <div class="olist arabic">
-<ol class="arabic" start="2">
+<ol class="arabic">
 <li>
-<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This is where the network infrastructure for SQL Server will be built. The template is launched in the us-east-1 Region by default.</p>
+<p>Sign in to your AWS account, and choose one of the following options to launch the AWS CloudFormation template. For help with choosing an option, see <a href="#_deployment_options">deployment options</a> earlier in this guide.</p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 75%;">
+<col style="width: 25%;">
+</colgroup>
+<tbody>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/7j9Ad?" target="_blank" rel="noopener">Deploy SQL Server with Always On Replication into a new VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/7GBne?" target="_blank" rel="noopener">View template</a></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/d3wqB?" target="_blank" rel="noopener">Deploy SQL Server with Always On Replication into an existing VPC on AWS</a></p></td>
+<td class="tableblock halign-center valign-top"><p class="tableblock"><a href="https://fwd.aws/QxP8p?" target="_blank" rel="noopener">View template</a></p></td>
+</tr>
+</tbody>
+</table>
 </li>
-</ol>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="3">
+<li>
+<p>Check the AWS Region that’s displayed in the upper-right corner of the navigation bar, and change it if necessary. This Region is where the network infrastructure for SQL Server with Always On Replication is built. The template is launched in the us-east-1 Region by default. For other choices, see <a href="#_supported_regions">Supported Regions</a> earlier in this guide.</p>
+</li>
 <li>
 <p>On the <strong>Create stack</strong> page, keep the default setting for the template URL, and then choose <strong>Next</strong>.</p>
 </li>
 <li>
-<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary.</p>
+<p>On the <strong>Specify stack details</strong> page, change the stack name if needed. Review the parameters for the template. Provide values for the parameters that require input. For all other parameters, review the default settings and customize them as necessary. For details on each parameter, see the <a href="#_parameter_reference">Parameter reference</a> section of this guide. When you finish reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Configure stack options</strong> page, you can <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resource-tags.html" target="_blank" rel="noopener">specify tags</a> (key-value pairs) for resources in your stack and <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html" target="_blank" rel="noopener">set advanced options</a>. When you’re finished, choose <strong>Next</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Review</strong> page, review and confirm the template settings. Under <strong>Capabilities</strong>, select the two check boxes to acknowledge that the template creates IAM resources and might require the ability to automatically expand macros.</p>
+</li>
+<li>
+<p>Choose <strong>Create stack</strong> to deploy the stack.</p>
+</li>
+<li>
+<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the SQL Server with Always On Replication deployment is ready.</p>
+</li>
+<li>
+<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Figure 9</a>, to view the created resources.</p>
 </li>
 </ol>
 </div>
+<div id="cfn_outputs" class="imageblock">
+<div class="content">
+<a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="100%" height="100%"></a>
+</div>
+<div class="title">Figure 9. SQL Server with Always On Replication outputs after successful deployment</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_post_deployment_steps">Post-deployment steps</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_run_windows_updates">Run Windows updates</h3>
 <div class="paragraph">
-<p>In the following tables, parameters are listed by category and described separately for the deployment options. When you finish reviewing and customizing the parameters, choose <strong>Next</strong>.</p>
+<p>In order to ensure the deployed servers' operating systems and installed applications have the latest Microsoft updates, run Windows Update on each server.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Create an RDP session from the Remote Desktop Gateway server to each deployed server.</p>
+</li>
+<li>
+<p>Open the <strong>Settings</strong> application.</p>
+</li>
+<li>
+<p>Open <strong>Update &amp; Security</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Check for updates</strong>.</p>
+</li>
+<li>
+<p>Install any updates and reboot if necessary.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_post_launch_task">Post-launch task</h3>
+<div class="paragraph">
+<p>There is a known issue with the Microsoft SQL Quick Start wherein the secondary cluster IP address is not added to the cluster.</p>
+</div>
+<div id="postlaunch1" class="imageblock">
+<div class="content">
+<img src="images/image10.png" alt="image" width="620" height="129">
+</div>
+<div class="title">Figure 10. WSFC Cluster with only one IP address</div>
+</div>
+<div class="paragraph">
+<p>To add the secondary cluster IP address, do the following.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>On the first cluster node, launch an elevated Windows PowerShell window and run the following commands.</p>
+<div class="olist loweralpha">
+<ol class="loweralpha" type="a">
+<li>
+<p>Import-Module FailoverClusters</p>
+</li>
+<li>
+<p>Get-ClusterGroup</p>
+<div class="paragraph">
+<p>The name of the Cluster Group should be “Cluster Group.”</p>
+</div>
+</li>
+<li>
+<p>Add-ClusterResource –Name NewIP –ResourceType “IP Address” –Group “Cluster Group”</p>
+<div id="postlaunch2" class="imageblock">
+<div class="content">
+<img src="images/image11.png" alt="image" width="623" height="221">
+</div>
+<div class="title">Figure 11. Creating a new IP address cluster resource in PowerShell</div>
+</div>
+</li>
+</ol>
+</div>
+</li>
+<li>
+<p>From Windows Administrative Tools, open the Failover Clustering management GUI, select the cluster in the left-hand column, and expand the cluster in Core Cluster Resources. The new IP address should be populated.</p>
+<div id="postlaunch3" class="imageblock">
+<div class="content">
+<img src="images/image12.png" alt="image" width="565" height="197">
+</div>
+<div class="title">Figure 12. New IP address cluster resource</div>
+</div>
+</li>
+<li>
+<p>Open the context (right-click) menu for the new IP address, and choose <strong>Properties</strong>. Select the secondary network, and enter an IP address (i.e. 10.0.32.101), then choose <strong>OK</strong>.</p>
+<div id="postlaunch4" class="imageblock">
+<div class="content">
+<img src="images/image13.png" alt="image" width="400" height="556">
+</div>
+<div class="title">Figure 13. Setting the IP address cluster resource value</div>
+</div>
+</li>
+<li>
+<p>Open the context (right-click) menu for the new IP address, and choose <strong>Bring Online</strong>.</p>
+<div id="postlaunch5" class="imageblock">
+<div class="content">
+<img src="images/image14.png" alt="image" width="421" height="226">
+</div>
+<div class="title">Figure 14. Bringing the new IP address online</div>
+</div>
+</li>
+<li>
+<p>To create an “OR” dependency for the cluster, under <strong>Core Cluster Resources</strong>, open the context (right-click) menu for the cluster name, and choose <strong>Properties</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Dependencies</strong> tab, add the new IP address as a resource, change the dependency type to <strong>OR</strong>, and then choose <strong>OK</strong>.</p>
+<div id="postlaunch6" class="imageblock">
+<div class="content">
+<img src="images/image15.png" alt="image" width="400" height="488">
+</div>
+<div class="title">Figure 15. Adding the new IP address as a cluster dependency</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_test_the_deployment">Test the deployment</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you’re using a third Availability Zone as a full SQL Server cluster node (that is, if you set the <strong>Third Availability Zone</strong> parameter to <strong>full</strong>), take that into consideration when following the steps in this section.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Before you put the availability group into production, you should test your deployment and familiarize yourself with the cluster’s behavior during a high availability automatic failover or a disaster recovery event.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the Remote Desktop Connection application (mstsc.exe), connect to the Remote Desktop Gateway instance, and then connect to the WSFC node (e.g., WSFCNode1) in that zone.</p>
+</li>
+<li>
+<p>On the first cluster node instance, open the Failover Cluster Manager to view the cluster core resources. Make sure that the cluster, one of the two listed IP addresses, and the file-share witness are online.</p>
+<div id="postlaunch7" class="imageblock">
+<div class="content">
+<img src="images/image16.png" alt="image" width="630" height="351">
+</div>
+<div class="title">Figure 16. Viewing the Failover Cluster Manager</div>
+</div>
+</li>
+<li>
+<p>Open SQL Server Management Studio. In Object Explorer, open the context (right-click) menu for the <strong>Always On High Availability</strong> node, and then launch the dashboard for the availability group (e.g., SQLAG1).</p>
+</li>
+<li>
+<p>In the dashboard, view the availability replicas and make sure that their synchronization state is <strong>Synchronized.</strong></p>
+<div id="postlaunch8" class="imageblock">
+<div class="content">
+<img src="images/image17.png" alt="image" width="581" height="349">
+</div>
+<div class="title">Figure 17. Viewing the Always On High Availability dashboard with all nodes synchronized</div>
+</div>
+</li>
+<li>
+<p>Make sure that the primary instance and the IP address in the <strong>Cluster Core Resources</strong> pane of Failover Cluster Manager are coordinated. That is, if the primary instance is WSFCNode1, the IP address 10.0.0.101 should be online. If you need to move the cluster core resources to WSFCNode1, you can do so through PowerShell by using the command:</p>
+<div class="paragraph">
+<p>Get-ClusterGroup 'Cluster Group' | Move-ClusterGroup -Node WSFCNode1</p>
+</div>
+</li>
+<li>
+<p>Sign in to the AWS Management Console, and open the Amazon EC2 console at <a href="https://console.aws.amazon.com/ec2/" class="bare">https://console.aws.amazon.com/ec2/</a>.</p>
+</li>
+<li>
+<p>Stop the primary instance (e.g., WSFCNode1).</p>
+</li>
+<li>
+<p>Open the Remote Desktop Connection application (mstsc.exe), and then connect to the second cluster node (e.g., WSFCNode2) in Availability Zone 2.</p>
+</li>
+<li>
+<p>On the second cluster node instance, use the Failover Cluster Manager to view the cluster core resources. Note that the IP address that was previously offline (e.g., 10.0.32.101) is now online.</p>
+<div id="postlaunch9" class="imageblock">
+<div class="content">
+<img src="images/image18.png" alt="image" width="648" height="342">
+</div>
+<div class="title">Figure 18. Viewing the Failover Cluster Manager with WSFCNode1 offline</div>
+</div>
+</li>
+<li>
+<p>Open SQL Server Management Studio. In Object Explorer, open the context (right-click) menu for the <strong>Always On High Availability</strong> node, and launch the dashboard for the availability group (e.g., SQLAG1).</p>
+</li>
+<li>
+<p>In the dashboard, view the availability replicas<strong>.</strong> Note that now the primary instance has switched to WSFCNode2, and that the synchronization state of WSFCNode1 is <strong>Not Synchronizing.</strong></p>
+<div id="postlaunch10" class="imageblock">
+<div class="content">
+<img src="images/image19.png" alt="image" width="648" height="370">
+</div>
+<div class="title">Figure 19. Always On High Availability dashboard with the first cluster node offline</div>
+</div>
+</li>
+<li>
+<p>At this point, you can start the WSFCNode1 instance again in the Amazon EC2 console. When the instance is online, use the <strong>Failover wizard</strong> in the Availability Group dashboard and switch the primary instance back to WSFCNode1.</p>
+</li>
+</ol>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1470,14 +1745,138 @@ If you’re deploying SQL Server into an existing VPC, make sure that your VPC h
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Unless you are customizing the Quick Start templates for your own deployment projects, keep the default settings for the parameters <strong>Quick Start S3 bucket name</strong>, <strong>Quick Start S3 bucket Region</strong>, and <strong>Quick Start S3 key prefix</strong>. Changing these settings automatically updates code references to point to a new Quick Start location. For more information, see the <a href="https://aws-quickstart.github.io/option1.html" target="_blank" rel="noopener">AWS Quick Start Contributor’s Guide</a>.
+We recommend that you use <code>MultiSubnetFailover=true</code> in your SQL client connection string. <a href="https://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnectionstringbuilder.multisubnetfailover.aspx" target="_blank" rel="noopener">This property</a> enables faster failover for all availability groups in SQL Server and will significantly reduce failover time for single and multi-subnet Always On topologies. If you have legacy clients that need to connect to an availability group listener and cannot use <code>MultiSubnetFailover</code>, we recommend that you change the <a href="https://msdn.microsoft.com/en-us/library/hh213080.aspx?f=255&amp;MSPPError=-2147217396#RegisterAllProvidersIP" target="_blank" rel="noopener">RegisterAllProvidersIP</a> setting to 0 by using the <code>Set-ClusterParameter</code> cmdlet.
 </td>
 </tr>
 </table>
 </div>
 </div>
+</div>
+<div class="sect1">
+<h2 id="_faq">FAQ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><strong>Q.</strong> I encountered a <strong>CREATE_FAILED</strong> error when I launched the Quick Start.</p>
+</div>
+<div class="paragraph">
+<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. (This setting is under <strong>Advanced</strong> in the AWS CloudFormation console, <strong>Options</strong> page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)</p>
+</div>
+<div class="admonitionblock warning">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-warning" title="Warning"></i>
+</td>
+<td class="content">
+When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>For additional information, see <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting AWS CloudFormation</a> on the AWS website.</p>
+</div>
+<div class="paragraph">
+<p><strong>Q.</strong> I encountered a size limitation error when I deployed the AWS CloudFormation templates.</p>
+</div>
+<div class="paragraph">
+<p><strong>A.</strong> We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information, see <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html" target="_blank" rel="noopener">AWS CloudFormation quotas</a> on the AWS website.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_additional_resources">Additional resources</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://aws.amazon.com/getting-started/" target="_blank" rel="noopener">Getting Started Resource Center</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/general/latest/gr/" target="_blank" rel="noopener">AWS General Reference</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html" target="_blank" rel="noopener">AWS Glossary</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>AWS services</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://docs.aws.amazon.com/cloudformation/index.html" target="_blank" rel="noopener">AWS CloudFormation</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html" target="_blank" rel="noopener">Amazon EBS</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/ec2/" target="_blank" rel="noopener">Amazon EC2</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/iam/" target="_blank" rel="noopener">IAM</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/secretsmanager/index.html" target="_blank" rel="noopener">AWS Secrets Manager</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/systems-manager/index.html" target="_blank" rel="noopener">AWS Systems Manager</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/vpc/" target="_blank" rel="noopener">Amazon VPC</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>SQL Server documentation</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://msdn.microsoft.com/library/79d2ea5a-edd8-4b3b-9502-96202057b01a" target="_blank" rel="noopener">Windows Server Failover Clustering (WSFC) with SQL Server</a></p>
+</li>
+<li>
+<p><a href="https://msdn.microsoft.com/en-us/library/hh510230.aspx" target="_blank" rel="noopener">Always On Availability Groups</a></p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p><strong>Other Quick Start reference deployments</strong></p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://aws.amazon.com/quickstart/" target="_blank" rel="noopener">AWS Quick Start home page</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/quickstart/latest/active-directory-ds/" target="_blank" rel="noopener">Microsoft Active Directory DS on the AWS Cloud</a></p>
+</li>
+<li>
+<p><a href="https://docs.aws.amazon.com/quickstart/latest/rd-gateway/" target="_blank" rel="noopener">Microsoft Remote Desktop Gateway on the AWS Cloud</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parameter_reference">Parameter reference</h2>
+<div class="sectionbody">
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Unless you are customizing the Quick Start templates for your own deployment projects, we recommend that you keep the default settings for the parameters labeled <code>Quick Start S3 bucket name</code>, <code>Quick Start S3 bucket
+Region</code>, and <code>Quick Start S3 key prefix</code>. Changing these parameter settings automatically updates code references to point to a new Quick Start location. For more information, see the <a href="https://aws-quickstart.github.io/option1.html" target="_blank" rel="noopener">AWS Quick Start Contributor’s Guide</a>.
+</td>
+</tr>
+</table>
+</div>
 <div class="sect2">
-<h3 id="_launch_into_a_new_vpc">Launch into a new VPC</h3>
+<h3 id="_parameters_for_deploying_into_a_new_vpc">Parameters for deploying into a new VPC</h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Network configuration</caption>
 <colgroup>
@@ -1946,25 +2345,25 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket name
 (<code>QSS3BucketName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-quickstart</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 bucket name for the Quick Start assets. This name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket region
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket Region
 (<code>QSS3BucketRegion</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>us-east-1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. Keep the default Region unless you are customizing the template. Changing this Region updates code references to point to a new Quick Start location. When using your own bucket, specify the Region. See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 key prefix
 (<code>QSS3KeyPrefix</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-microsoft-sql/</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix for the Quick Start assets. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html" class="bare">https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html</a> and <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="sect2">
-<h3 id="_launch_into_an_existing_vpc">Launch into an existing VPC</h3>
+<h3 id="_parameters_for_deploying_into_an_existing_vpc">Parameters for deploying into an existing VPC</h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 9. Network configuration</caption>
 <colgroup>
@@ -2416,360 +2815,22 @@ Unless you are customizing the Quick Start templates for your own deployment pro
 <td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket name
 (<code>QSS3BucketName</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>aws-quickstart</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 bucket name for the Quick Start assets. This name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Name of the S3 bucket for your copy of the Quick Start assets. Keep the default name unless you are customizing the template. Changing the name updates code references to point to a new Quick Start location. This name can include numbers, lowercase letters, uppercase letters, and hyphens, but do not start or end with a hyphen (-). See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket region
+<td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 bucket Region
 (<code>QSS3BucketRegion</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>us-east-1</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. When using your own bucket, you must specify this value.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">AWS Region where the Quick Start S3 bucket (QSS3BucketName) is hosted. Keep the default Region unless you are customizing the template. Changing this Region updates code references to point to a new Quick Start location. When using your own bucket, specify the Region. See <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Quick Start S3 key prefix
 (<code>QSS3KeyPrefix</code>)</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>quickstart-microsoft-sql/</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix for the Quick Start assets. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">S3 key prefix that is used to simulate a directory for your copy of the Quick Start assets. Keep the default prefix unless you are customizing the template. Changing this prefix updates code references to point to a new Quick Start location. This prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slashes (/). End with a forward slash. See <a href="https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html" class="bare">https://docs.aws.amazon.com/AmazonS3/latest/dev/UsingMetadata.html</a> and <a href="https://aws-quickstart.github.io/option1.html" class="bare">https://aws-quickstart.github.io/option1.html</a>.</p></td>
 </tr>
 </tbody>
 </table>
-<div class="olist arabic">
-<ol class="arabic" start="5">
-<li>
-<p>On the <strong>Configure stack options</strong> page, you can <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-resource-tags.html" target="_blank" rel="noopener">specify tags</a> (key-value pairs) for resources in your stack and <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-add-tags.html" target="_blank" rel="noopener">set advanced options</a>. When you’re finished, choose <strong>Next</strong>.</p>
-</li>
-<li>
-<p>On the <strong>Review</strong> page, review and confirm the template settings. Under <strong>Capabilities</strong>, select the two check boxes to acknowledge that the template creates IAM resources and might require the ability to automatically expand macros.</p>
-</li>
-<li>
-<p>Choose <strong>Create stack</strong> to deploy the stack.</p>
-</li>
-<li>
-<p>Monitor the status of the stack. When the status is <strong>CREATE_COMPLETE</strong>, the SQL Server deployment is ready.</p>
-</li>
-<li>
-<p>Use the values displayed in the <strong>Outputs</strong> tab for the stack, as shown in <a href="#cfn_outputs">Figure 8</a>, to view the created resources.</p>
-</li>
-</ol>
-</div>
-<div id="cfn_outputs" class="imageblock">
-<div class="content">
-<a class="image" href="images/cfn_outputs.png"><img src="images/cfn_outputs.png" alt="cfn_outputs" width="100%" height="100%"></a>
-</div>
-<div class="title">Figure 8. SQL Server outputs after successful deployment</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_post_launch_task">Post-launch task</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>There is a known issue with the Microsoft SQL Quick Start wherein the secondary cluster IP address is not added to the cluster.</p>
-</div>
-<div id="postlaunch1" class="imageblock">
-<div class="content">
-<img src="images/image10.png" alt="image" width="620" height="129">
-</div>
-<div class="title">Figure 9. WSFC Cluster with only one IP address</div>
-</div>
-<div class="paragraph">
-<p>To add the secondary cluster IP address, do the following.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>On the first cluster node, launch an elevated Windows PowerShell window and run the following commands.</p>
-<div class="olist loweralpha">
-<ol class="loweralpha">
-<li>
-<p>Import-Module FailoverClusters</p>
-</li>
-<li>
-<p>Get-ClusterGroup</p>
-<div class="paragraph">
-<p>The name of the Cluster Group should be “Cluster Group.”</p>
-</div>
-</li>
-<li>
-<p>Add-ClusterResource –Name NewIP –ResourceType “IP Address” –Group “Cluster Group”</p>
-</li>
-</ol>
-</div>
-</li>
-</ol>
-</div>
-<div id="postlaunch2" class="imageblock">
-<div class="content">
-<img src="images/image11.png" alt="image" width="623" height="221">
-</div>
-<div class="title">Figure 10. Creating a new IP address cluster resource in PowerShell</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="2">
-<li>
-<p>From Windows Administrative Tools, open the Failover Clustering management GUI, select the cluster in the left-hand column, and expand the cluster in Core Cluster Resources. The new IP address should be populated.</p>
-</li>
-</ol>
-</div>
-<div id="postlaunch3" class="imageblock">
-<div class="content">
-<img src="images/image12.png" alt="image" width="565" height="197">
-</div>
-<div class="title">Figure 11. New IP address cluster resource</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="3">
-<li>
-<p>Open the context (right-click) menu for the new IP address, and choose <strong>Properties</strong>. Select the secondary network, and enter an IP address (i.e. 10.0.32.101), then choose <strong>OK</strong>.</p>
-</li>
-</ol>
-</div>
-<div id="postlaunch4" class="imageblock">
-<div class="content">
-<img src="images/image13.png" alt="image" width="400" height="556">
-</div>
-<div class="title">Figure 12. Setting the IP address cluster resource value</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="4">
-<li>
-<p>Open the context (right-click) menu for the new IP address, and choose <strong>Bring Online</strong>.</p>
-</li>
-</ol>
-</div>
-<div id="postlaunch5" class="imageblock">
-<div class="content">
-<img src="images/image14.png" alt="image" width="421" height="226">
-</div>
-<div class="title">Figure 13. Bringing the new IP address online</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="5">
-<li>
-<p>To create an “OR” dependency for the cluster, under <strong>Core Cluster Resources</strong>, open the context (right-click) menu for the cluster name, and choose <strong>Properties</strong>.</p>
-</li>
-<li>
-<p>On the <strong>Dependencies</strong> tab, add the new IP address as a resource, change the dependency type to <strong>OR</strong>, and then choose <strong>OK</strong>.</p>
-</li>
-</ol>
-</div>
-<div id="postlaunch6" class="imageblock">
-<div class="content">
-<img src="images/image15.png" alt="image" width="400" height="488">
-</div>
-<div class="title">Figure 14. Adding the new IP address as a cluster dependency</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_test_the_deployment">Test the deployment</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Note</strong> If you’re using a third Availability Zone as a full SQL Server cluster node (that is, if you set the <strong>Third Availability Zone</strong> parameter to <strong>full</strong>), take that into consideration when following the steps in this section.</p>
-</div>
-<div class="paragraph">
-<p>Before you put the availability group into production, you should test your deployment and familiarize yourself with the cluster’s behavior during a high availability automatic failover or a disaster recovery event.</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic">
-<li>
-<p>Open the Remote Desktop Connection application (mstsc.exe), connect to the Remote Desktop Gateway instance, and then connect to the WSFC node (e.g., WSFCNode1) in that zone.</p>
-</li>
-</ol>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="2">
-<li>
-<p>On the first cluster node instance, open the Failover Cluster Manager to view the cluster core resources. Make sure that the cluster, one of the two listed IP addresses, and the file share witness are online.</p>
-</li>
-</ol>
-</div>
-<div id="postlaunch7" class="imageblock">
-<div class="content">
-<img src="images/image16.png" alt="image" width="630" height="351">
-</div>
-<div class="title">Figure 15. Viewing the Failover Cluster Manager</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="3">
-<li>
-<p>Open SQL Server Management Studio. In Object Explorer, open the context (right-click) menu for the <strong>AlwaysOn High Availability</strong> node, and then launch the dashboard for the availability group (e.g., SQLAG1).</p>
-</li>
-<li>
-<p>In the dashboard, view the availability replicas and make sure that their synchronization state is *Synchronized. *</p>
-</li>
-</ol>
-</div>
-<div id="postlaunch8" class="imageblock">
-<div class="content">
-<img src="images/image17.png" alt="image" width="581" height="349">
-</div>
-<div class="title">Figure 16. Viewing the Always On High Availability dashboard with all nodes synchronized</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="5">
-<li>
-<p>Make sure that the primary instance and the IP address in the <strong>Cluster Core Resources</strong> pane of Failover Cluster Manager are coordinated. That is, if the primary instance is WSFCNode1, the IP address 10.0.0.101 should be online. If you need to move the cluster core resources to WSFCNode1, you can do so through PowerShell by using the command:</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>Get-ClusterGroup 'Cluster Group' | Move-ClusterGroup -Node WSFCNode1</p>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="6">
-<li>
-<p>Sign in to the AWS Management Console, and open the Amazon EC2 console at <a href="https://console.aws.amazon.com/ec2/" class="bare">https://console.aws.amazon.com/ec2/</a>.</p>
-</li>
-<li>
-<p>Stop the primary instance (e.g., WSFCNode1).</p>
-</li>
-<li>
-<p>Open the Remote Desktop Connection application (mstsc.exe), and then connect to the second cluster node (e.g., WSFCNode2) in Availability Zone 2.</p>
-</li>
-<li>
-<p>On the second cluster node instance, use the Failover Cluster Manager to view the cluster core resources. Note that the IP address that was previously offline (e.g., 10.0.32.101) is now online.</p>
-</li>
-</ol>
-</div>
-<div id="postlaunch9" class="imageblock">
-<div class="content">
-<img src="images/image18.png" alt="image" width="648" height="342">
-</div>
-<div class="title">Figure 17. Viewing the Failover Cluster Manager with WSFCNode1 offline</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="10">
-<li>
-<p>Open SQL Server Management Studio. In Object Explorer, open the context (right-click) menu for the <strong>AlwaysOn High Availability</strong> node, and launch the dashboard for the availability group (e.g., SQLAG1).</p>
-</li>
-<li>
-<p>In the dashboard, view the availability replicas<strong>.</strong> Note that now the primary instance has switched to WSFCNode2, and that the synchronization state of WSFCNode1 is <strong>Not Synchronizing.</strong></p>
-</li>
-</ol>
-</div>
-<div id="postlaunch10" class="imageblock">
-<div class="content">
-<img src="images/image19.png" alt="image" width="648" height="370">
-</div>
-<div class="title">Figure 18. Always On High Availability dashboard with the first cluster node offline</div>
-</div>
-<div class="olist arabic">
-<ol class="arabic" start="12">
-<li>
-<p>At this point, you can start the WSFCNode1 instance again in the Amazon EC2 console. When the instance is online, use the <strong>Failover wizard</strong> in the Availability Group dashboard and switch the primary instance back to WSFCNode1.</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p><strong>Note</strong> We recommend that you use MultiSubnetFailover=true in your SQL client connection string. <a href="https://msdn.microsoft.com/en-us/library/system.data.sqlclient.sqlconnectionstringbuilder.multisubnetfailover.aspx">This property</a> enables faster failover for all availability groups in SQL Server and will significantly reduce failover time for single and multi-subnet Always On topologies. If you have legacy clients that need to connect to an availability group listener and cannot use <strong>MultiSubnetFailover</strong>, we recommend that you change the <a href="https://msdn.microsoft.com/en-us/library/hh213080.aspx?f=255&amp;MSPPError=-2147217396#RegisterAllProvidersIP">RegisterAllProvidersIP</a> setting to 0 by using the <strong>Set-ClusterParameter</strong> cmdlet.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_faq">FAQ</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><strong>Q.</strong> I encountered a <strong>CREATE_FAILED</strong> error when I launched the Quick Start.</p>
-</div>
-<div class="paragraph">
-<p><strong>A.</strong> If AWS CloudFormation fails to create the stack, we recommend that you relaunch the template with <strong>Rollback on failure</strong> set to <strong>Disabled</strong>. (This setting is under <strong>Advanced</strong> in the AWS CloudFormation console, <strong>Options</strong> page.) With this setting, the stack’s state is retained and the instance is left running, so you can troubleshoot the issue. (For Windows, look at the log files in %ProgramFiles%\Amazon\EC2ConfigService and C:\cfn\log.)</p>
-</div>
-<div class="admonitionblock warning">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-warning" title="Warning"></i>
-</td>
-<td class="content">
-When you set <strong>Rollback on failure</strong> to <strong>Disabled</strong>, you continue to incur AWS charges for this stack. Delete the stack when you finish troubleshooting.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>For additional information, see <a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/troubleshooting.html" target="_blank" rel="noopener">Troubleshooting AWS CloudFormation</a> on the AWS website.</p>
-</div>
-<div class="paragraph">
-<p><strong>Q.</strong> I encountered a size limitation error when I deployed the AWS CloudFormation templates.</p>
-</div>
-<div class="paragraph">
-<p><strong>A.</strong> We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information, see <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html">AWS CloudFormation quotas</a> on the AWS website.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_additional_resources">Additional Resources</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>Getting Started Resource Center</p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/general/latest/gr/">AWS General Reference</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/general/latest/gr/glos-chap.html">AWS Glossary</a></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>AWS services</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>AWS CloudFormation</p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html">Amazon EBS</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/ec2/">Amazon EC2</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/iam/">IAM</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/secretsmanager/index.html">AWS Secrets Manager</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/systems-manager/index.html">AWS Systems Manager</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/vpc/">Amazon VPC</a></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>SQL Server documentation</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://msdn.microsoft.com/library/79d2ea5a-edd8-4b3b-9502-96202057b01a">Windows Server Failover Clustering (WSFC) with SQL Server</a></p>
-</li>
-<li>
-<p><a href="https://msdn.microsoft.com/en-us/library/hh510230.aspx">Always On Availability Groups</a></p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p><strong>Other Quick Start reference deployments</strong></p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><a href="https://aws.amazon.com/quickstart/">AWS Quick Start home page</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/quickstart/latest/active-directory-ds/">Microsoft Active Directory DS on the AWS Cloud</a></p>
-</li>
-<li>
-<p><a href="https://docs.aws.amazon.com/quickstart/latest/rd-gateway/">Microsoft Remote Desktop Gateway on the AWS Cloud</a></p>
-</li>
-</ul>
 </div>
 </div>
 </div>
@@ -2807,7 +2868,7 @@ and to share your customizations with others.</p>
 <p>This document is provided for informational purposes only. It represents AWS’s current product offerings and practices as of the date of issue of this document, which are subject to change without notice. Customers are responsible for making their own independent assessment of the information in this document and any use of AWS’s products or services, each of which is provided “as is” without warranty of any kind, whether expressed or implied. This document does not create any warranties, representations, contractual commitments, conditions, or assurances from AWS, its affiliates, suppliers, or licensors. The responsibilities and liabilities of AWS to its customers are controlled by AWS agreements, and this document is not part of, nor does it modify, any agreement between AWS and its customers.</p>
 </div>
 <div class="paragraph">
-<p>The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at <a href="http://aws.amazon.com/apache2.0/" class="bare">http://aws.amazon.com/apache2.0/</a> or in the accompanying "license" file. This code is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for specific language governing permissions and limitations.</p>
+<p>The software included with this paper is licensed under the Apache License, version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at <a href="http://aws.amazon.com/apache2.0/" target="_blank" rel="noopener">http://aws.amazon.com/apache2.0/</a> or in the accompanying "license" file. This code is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either expressed or implied. See the License for specific language governing permissions and limitations.</p>
 </div>
 </div>
 </div>
@@ -2815,7 +2876,7 @@ and to share your customizations with others.</p>
 <p class="footer-text">
 <!-- We can use document attributes: -->
 <!-- Generated with Asciidoctor v2.0.10. -->
-<a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> | &copy; 2020, Amazon Web Services, Inc. or its affiliates. All rights reserved.
+<a href="https://aws.amazon.com/privacy/">Privacy</a> | <a href="https://aws.amazon.com/terms/">Site terms</a> | &copy; 2021, Amazon Web Services, Inc. or its affiliates. All rights reserved.
 </p>
 </body>
 </html>

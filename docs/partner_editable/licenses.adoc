@@ -2,13 +2,13 @@
 
 The AWS CloudFormation template for this Quick Start includes configuration parameters that you can customize. Some of these settings, such as instance type, volume size, or opting to use the Amazon-provided image for SQL Server, will affect the cost of deployment. See the pricing pages for each AWS service you will be using for cost estimates.
 
-*Tip* After you deploy the Quick Start, we recommend that you enable the https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-gettingstarted-turnonreports.html[AWS Cost and Usage Report] to track costs associated with the Quick Start. This report delivers billing metrics to an Amazon Simple Storage Service (Amazon S3) bucket in your account. It provides cost estimates based on usage throughout each month and finalizes the data at the end of the month. For more information about the report, see the https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-reports-costusage.html[AWS documentation].
-
 The Quick Start provides three licensing options for SQL Server Enterprise edition. You can:
 
-* Install a trial version of SQL Server, SQL Server 2017, or SQL Server 2019 Enterprise edition from the http://www.microsoft.com/evalcenter/[Microsoft Evaluation Center].
-* Use the Amazon Machine Image (AMI) for Windows Server with license costs and SQL Server Enterprise edition included.
-* Use your volume licensing software and mobilize the license. For development and test environments, you can leverage your existing MSDN licenses for SQL Server by using Amazon EC2 Dedicated Instances. For more information about these options, see the https://aws.amazon.com/windows/resources/licensing/[Microsoft Licensing on AWS] webpage.
+* Install a trial version of SQL Server, SQL Server 2017, or SQL Server 2019 Enterprise edition from the http://www.microsoft.com/evalcenter/[Microsoft Evaluation Center^].
+* Use the Amazon Machine Image (AMI) for Windows Server with license costs and SQL Server Enterprise edition included. When using AWS-provided SQL licensing, you don't need a copy of SQL Server 2019.
+* Use your volume licensing software and mobilize the license. For development and test environments, you can leverage your existing MSDN licenses for SQL Server by using Amazon EC2 Dedicated Instances. When using your own SQL license, you need a copy of SQL Server 2019.
+
+For more information about these options, see the https://aws.amazon.com/windows/resources/licensing/[Microsoft Licensing on AWS^] webpage. 
 
 This Quick Start launches one of the Windows Server AMIs listed in the following table, depending on the parameters you set when you deploy the Quick Start.
 

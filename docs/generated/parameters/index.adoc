@@ -1,6 +1,6 @@
 
-=== Launch into a new VPC
-include::sql-master.adoc[]
+=== Parameters for deploying into a new VPC
+include::sql-main.template.adoc[]
 
-=== Launch into an existing VPC
-include::sql.adoc[]
+=== Parameters for deploying into an existing VPC
+include::sql.template.adoc[]

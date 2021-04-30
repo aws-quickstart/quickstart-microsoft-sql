@@ -1,7 +1,5 @@
-https://aws.amazon.com/about-aws/global-infrastructure/[Regions]
+This deployment includes AWS Secrets Manager, which isn’t supported in all https://aws.amazon.com/about-aws/global-infrastructure/[AWS Regions^]. For a current list of supported Regions, see https://docs.aws.amazon.com/general/latest/gr/asm.html[Service Endpoints and Quotas] in the AWS documentation. Also, if you’re planning to deploy an architecture with three Availability Zones, choose an AWS Region that supports three Availability Zones.
 
-This deployment includes AWS Secrets Manager, which isn’t currently supported in all AWS Regions. For a current list of supported regions, see https://docs.aws.amazon.com/general/latest/gr/asm.html[Service Endpoints and Quotas] in the AWS documentation. Also, if you’re planning to deploy an architecture with three Availability Zones, choose an AWS Region that supports three zones.
-
-If using non-default settings, including dedicated hosts for the SQL servers and an FSx file share for the file share witness, see the AWS documentation to ensure regional compatibility.
+If using nondefault settings, including dedicated hosts for the SQL servers and an FSx file share for the file-share witness, see the AWS documentation to ensure regional compatibility.
 
 //Full list: https://docs.aws.amazon.com/general/latest/gr/rande.html

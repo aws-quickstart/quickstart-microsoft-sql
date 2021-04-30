@@ -13,32 +13,32 @@ For additional information, see https://docs.aws.amazon.com/AWSCloudFormation/la
 
 *Q.* I encountered a size limitation error when I deployed the AWS CloudFormation templates.
 
-*A.* We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS CloudFormation quotas] on the AWS website.
+*A.* We recommend that you launch the Quick Start templates from the links in this guide or from another S3 bucket. If you deploy the templates from a local copy on your computer or from a location other than an S3 bucket, you might encounter template size limitations. For more information, see http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cloudformation-limits.html[AWS CloudFormation quotas^] on the AWS website.
 
 
-== Additional Resources
+== Additional resources
 
-* Getting Started Resource Center
-* https://docs.aws.amazon.com/general/latest/gr/[AWS General Reference]
-* https://docs.aws.amazon.com/general/latest/gr/glos-chap.html[AWS Glossary]
+* https://aws.amazon.com/getting-started/[Getting Started Resource Center^]
+* https://docs.aws.amazon.com/general/latest/gr/[AWS General Reference^]
+* https://docs.aws.amazon.com/general/latest/gr/glos-chap.html[AWS Glossary^]
 
 *AWS services*
 
-* AWS CloudFormation
-* https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html[Amazon EBS]
-* https://docs.aws.amazon.com/ec2/[Amazon EC2]
-* https://docs.aws.amazon.com/iam/[IAM]
-* https://docs.aws.amazon.com/secretsmanager/index.html[AWS Secrets Manager]
-* https://docs.aws.amazon.com/systems-manager/index.html[AWS Systems Manager]
-* https://docs.aws.amazon.com/vpc/[Amazon VPC]
+* https://docs.aws.amazon.com/cloudformation/index.html[AWS CloudFormation^]
+* https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AmazonEBS.html[Amazon EBS^]
+* https://docs.aws.amazon.com/ec2/[Amazon EC2^]
+* https://docs.aws.amazon.com/iam/[IAM^]
+* https://docs.aws.amazon.com/secretsmanager/index.html[AWS Secrets Manager^]
+* https://docs.aws.amazon.com/systems-manager/index.html[AWS Systems Manager^]
+* https://docs.aws.amazon.com/vpc/[Amazon VPC^]
 
 *SQL Server documentation*
 
-* https://msdn.microsoft.com/library/79d2ea5a-edd8-4b3b-9502-96202057b01a[Windows Server Failover Clustering (WSFC) with SQL Server]
-* https://msdn.microsoft.com/en-us/library/hh510230.aspx[Always On Availability Groups]
+* https://msdn.microsoft.com/library/79d2ea5a-edd8-4b3b-9502-96202057b01a[Windows Server Failover Clustering (WSFC) with SQL Server^]
+* https://msdn.microsoft.com/en-us/library/hh510230.aspx[Always On Availability Groups^]
 
 *Other Quick Start reference deployments*
 
-* https://aws.amazon.com/quickstart/[AWS Quick Start home page]
-* https://docs.aws.amazon.com/quickstart/latest/active-directory-ds/[Microsoft Active Directory DS on the AWS Cloud]
-* https://docs.aws.amazon.com/quickstart/latest/rd-gateway/[Microsoft Remote Desktop Gateway on the AWS Cloud]
+* https://aws.amazon.com/quickstart/[AWS Quick Start home page^]
+* https://docs.aws.amazon.com/quickstart/latest/active-directory-ds/[Microsoft Active Directory DS on the AWS Cloud^]
+* https://docs.aws.amazon.com/quickstart/latest/rd-gateway/[Microsoft Remote Desktop Gateway on the AWS Cloud^]
