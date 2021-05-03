@@ -2158,7 +2158,7 @@ Resources:
         - name: "2NodeAdditionalCreateAGConfig"
           action: aws:runCommand
           onFailure: "step:signalfailure"
-          nextStep: "CFNSignalEnd"
+          nextStep: "AddSecondClusterIP"
           inputs:
             DocumentName: AWS-RunPowerShellScript
             InstanceIds: 
@@ -2234,6 +2234,30 @@ Resources:
                    Start-DscConfiguration 'C:\AWSQuickstart\AddAG' -Wait -Verbose -Force
         
                    DscStatusCheck
+        - name: "AddSecondClusterIP"
+          action: "aws:runCommand"
+          onFailure: "step:signalfailure"
+          inputs:
+            DocumentName: "AWS-RunRemoteScript"
+            InstanceIds:
+              - "{{wsfcNode1InstanceId.InstanceId}}"
+            CloudWatchOutputConfig:
+              CloudWatchOutputEnabled: "true"
+              CloudWatchLogGroupName: !Ref 'QuickStartLogs'
+            Parameters:
+              sourceType: "S3"
+              sourceInfo:
+                !Sub
+                  - '{"path": "https://${S3Bucket}.s3.${S3Region}.{{URLSuffix}}/{{QSS3KeyPrefix}}scripts/AddSecondClusterIP.ps1"}'
+                  - S3Bucket: !If
+                      - UsingDefaultBucket
+                      - !Sub '${QSS3BucketName}-${AWS::Region}'
+                      - !Ref QSS3BucketName
+                    S3Region: !If
+                      - UsingDefaultBucket
+                      - !Ref AWS::Region
+                      - !Ref QSS3BucketRegion
+              commandLine: "./AddSecondClusterIP.ps1 -DomainNetBIOSName {{DomainNetBIOSName}} -AdminSecret {{AdminSecrets}} -WSFCNode1NetBIOSName {{WSFCNode1NetBIOSName}} -WSFCNode2NetBIOSName {{WSFCNode2NetBIOSName}} -WSFCNode2PrivateIP2 {{WSFCNode2PrivateIP2}}"
         # Determines if CFN Needs to be Signaled or if Work flow should just end
         - name: CFNSignalEnd
           action: aws:branch
