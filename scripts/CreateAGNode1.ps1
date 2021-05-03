@@ -128,7 +128,7 @@ if ($AGListener1PrivateIP3) {
 if ($ManagedAD -eq 'Yes'){
     $DN = Get-Domain
     $IdentityReference = $DomainNetBIOSName + "\" + $ClusterName + "$"
-    $OUPath = 'OU=Computers,OU=' + $DomainNetBIOSName + "," + $DN
+    $OUPath = 'CN=Computers,' + $DN
 }
 
 
