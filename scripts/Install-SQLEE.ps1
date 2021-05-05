@@ -30,7 +30,7 @@ $Credentials = (New-Object PSCredential($ClusterAdminUser,(ConvertTo-SecureStrin
 $SQLCredentials = (New-Object PSCredential($SQLAdminUser,(ConvertTo-SecureString $SQLUser.Password -AsPlainText -Force)))
 
 # Extract Install from Downloaded ISO
-New-Item -Path C:\SQLInstall -ItemType Directory
+New-Item -Path C:\SQLInstall -ItemType Directory -Force
 if ($SQLServerVersion -eq "2016") {
     $ImagePath = 'C:\SQLMedia\SQLServer2016SP1-FullSlipstream-x64-ENU.iso'
 } elseif ($SQLServerVersion -eq "2017") {
